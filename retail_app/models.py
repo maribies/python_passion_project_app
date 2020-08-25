@@ -4,7 +4,7 @@ class Business(models.Model):
   name = models.CharField(max_length=50)
   site_url = models.URLField()
   designer = models.ForeignKey(
-    'Designer',
+    'Business_Designer',
     on_delete=models.CASCADE
   )
   category = models.ForeignKey(
@@ -18,35 +18,24 @@ class Business(models.Model):
   def __str__(self):
     return self.name
 
+class Business_Designer(models.Model):
+  name = models.CharField(max_length=50)
+
+  def __str__(self):
+    return self.name
+
+  class Meta:
+    verbose_name_plural = "Business Designers"
+
 class Designer(models.Model):
   name = models.CharField(max_length=50)
   site_url = models.URLField()
-  category = models.ForeignKey(
-    'Category',
-    on_delete=models.CASCADE
-  )
-  product = models.ForeignKey(
-    'Product',
-    on_delete=models.CASCADE
-  )
-  collection = models.ForeignKey(
-    'Collection',
-    on_delete=models.CASCADE
-  )
-  season = models.ForeignKey(
-    'Season',
-    on_delete=models.CASCADE
-  ) 
 
   def __str__(self):
     return self.name
 
 class Category(models.Model):
   name = models.CharField(max_length=50)
-  product = models.ForeignKey(
-    'Product',
-    on_delete=models.CASCADE
-  )
 
   class Meta:
     verbose_name_plural = "Categories"
@@ -55,6 +44,7 @@ class Category(models.Model):
     return self.name
 
 class Product(models.Model):
+  designer = models.CharField(max_length=100)
   product_description = models.ForeignKey(
     'Product_Description',
     on_delete=models.CASCADE
@@ -93,6 +83,7 @@ class Product_Description(models.Model):
   season = models.CharField(max_length=50)
   collection = models.CharField(max_length=50)
   category = models.CharField(max_length=50)
+  brand = models.CharField(max_length=100)
 
   def __str__(self):
     return self.name
@@ -104,18 +95,39 @@ class Product_Price(models.Model):
   currency = models.CharField(max_length=50)
   amount = models.DecimalField(max_digits=19, decimal_places=2,)
 
+  class Meta:
+    verbose_name_plural = "Product Prices"
+
   def __str__(self):
-    return self.amount
+    return self.currency + str(self.amount)
 
 class Product_Stock(models.Model):
-  color = models.CharField(max_length=50)
-  quantity = models.IntegerField()
-
-  def __str__(self):
-    return self.color
+  colors = models.ForeignKey(
+    'Product_Color',
+    on_delete=models.CASCADE
+  )
+  quantities = models.ForeignKey(
+    'Product_Quantity',
+    on_delete=models.CASCADE
+  )
   
   class Meta:
     verbose_name_plural = "Product Stock"
+
+  def __str__(self):
+    return str(self.colors) + ' - ' + str(self.quantities) + ' units '
+
+class Product_Color(models.Model):
+  color = models.CharField(max_length=50)
+
+  def __str__(self):
+    return self.color
+
+class Product_Quantity(models.Model):
+  quantity = models.IntegerField(null=True, blank=True, default=None)
+
+  def __str__(self):
+    return str(self.quantity)
 
 class Product_Details(models.Model):
   material = models.TextField()
@@ -123,11 +135,11 @@ class Product_Details(models.Model):
   dimensions = models.CharField(max_length=200)
   sku = models.CharField(max_length=50)
 
-  def __str__(self):
-    return self.sku
-
   class Meta:
     verbose_name_plural = "Product Details"
+
+  def __str__(self):
+    return self.material + ' - ' + self.size  + ' - ' + self.dimensions  + ' - ' + self.sku
 
 class Collection(models.Model):
   name = models.CharField(max_length=50)
@@ -141,6 +153,7 @@ class Season(models.Model):
   def __str__(self):
     return self.name
 
+#TODO: Add names for better description in admin.
 class Product_Image(models.Model):
   image = models.ImageField()
 
