@@ -8,105 +8,251 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
-            name='Collection',
+            name="Collection",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
-            name='Price',
+            name="Price",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('currency', models.CharField(max_length=50)),
-                ('amount', models.DecimalField(decimal_places=2, max_digits=19)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("currency", models.CharField(max_length=50)),
+                ("amount", models.DecimalField(decimal_places=2, max_digits=19)),
             ],
         ),
         migrations.CreateModel(
-            name='Product_Description',
+            name="Product_Description",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('season', models.CharField(max_length=50)),
-                ('collection', models.CharField(max_length=50)),
-                ('category', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                ("season", models.CharField(max_length=50)),
+                ("collection", models.CharField(max_length=50)),
+                ("category", models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
-            name='Product_Details',
+            name="Product_Details",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('material', models.TextField()),
-                ('size', models.CharField(max_length=50)),
-                ('dimensions', models.CharField(max_length=200)),
-                ('sku', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("material", models.TextField()),
+                ("size", models.CharField(max_length=50)),
+                ("dimensions", models.CharField(max_length=200)),
+                ("sku", models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
-            name='Season',
+            name="Season",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
-            name='Stock',
+            name="Stock",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('color', models.CharField(max_length=50)),
-                ('quantity', models.IntegerField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("color", models.CharField(max_length=50)),
+                ("quantity", models.IntegerField()),
             ],
         ),
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('site_url', models.URLField()),
-                ('condition', models.CharField(choices=[(1, 'New'), (2, 'Preowned')], max_length=15)),
-                ('image', models.ImageField(upload_to='')),
-                ('price', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.price')),
-                ('product_description', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.product_description')),
-                ('product_details', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.product_details')),
-                ('stock', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.stock')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("site_url", models.URLField()),
+                (
+                    "condition",
+                    models.CharField(
+                        choices=[(1, "New"), (2, "Preowned")], max_length=15
+                    ),
+                ),
+                ("image", models.ImageField(upload_to="")),
+                (
+                    "price",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.price",
+                    ),
+                ),
+                (
+                    "product_description",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.product_description",
+                    ),
+                ),
+                (
+                    "product_details",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.product_details",
+                    ),
+                ),
+                (
+                    "stock",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.stock",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Designer',
+            name="Designer",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('site_url', models.URLField()),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.category')),
-                ('collection', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.collection')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.product')),
-                ('season', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.season')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("site_url", models.URLField()),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.category",
+                    ),
+                ),
+                (
+                    "collection",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.collection",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.product",
+                    ),
+                ),
+                (
+                    "season",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.season",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='category',
-            name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.product'),
+            model_name="category",
+            name="product",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="retail_app.product"
+            ),
         ),
         migrations.CreateModel(
-            name='Business',
+            name="Business",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('site_url', models.URLField()),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.category')),
-                ('designer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='retail_app.designer')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("site_url", models.URLField()),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.category",
+                    ),
+                ),
+                (
+                    "designer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="retail_app.designer",
+                    ),
+                ),
             ],
         ),
     ]
