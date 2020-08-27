@@ -66,29 +66,26 @@ def create_designer():
     business_data = get_business.main(input1)
     designer_data = get_designer.main(business_data, input2)
 
-    designer = Designer(
-        name=designer_data["name"], site_url=designer_data["site_url"]
-    )
+    designer = Designer(name=designer_data["name"], site_url=designer_data["site_url"])
 
     return designer
 
 
 def create_product_description(product_description):
     description = ProductDescription(
-            name=product_description["name"],
-            season=product_description["season"],
-            collection=product_description["collection"],
-            category=product_description["category"],
-            brand=product_description["brand"],
-        )
+        name=product_description["name"],
+        season=product_description["season"],
+        collection=product_description["collection"],
+        category=product_description["category"],
+        brand=product_description["brand"],
+    )
 
     return description
 
 
 def create_product_price(product_price):
     price = ProductPrice(
-        currency=product_price["currency"],
-        amount=float(product_price["amount"]),
+        currency=product_price["currency"], amount=float(product_price["amount"]),
     )
 
     return price
@@ -143,7 +140,7 @@ def create_and_save_product_objects(product_data):
     price.save()
     details.save()
 
-    return {'description': description, 'price': price, 'details': details}
+    return {"description": description, "price": price, "details": details}
 
 
 class Command(BaseCommand):

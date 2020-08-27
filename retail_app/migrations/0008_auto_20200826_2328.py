@@ -6,31 +6,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('retail_app', '0007_auto_20200825_1825'),
+        ("retail_app", "0007_auto_20200825_1825"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='name',
-            field=models.CharField(default='default', max_length=200),
+            model_name="product",
+            name="name",
+            field=models.CharField(default="default", max_length=200),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='productimage',
-            name='name',
-            field=models.CharField(default='defautlt', max_length=200),
+            model_name="productimage",
+            name="name",
+            field=models.CharField(default="defautlt", max_length=200),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='productstock',
-            name='name',
-            field=models.CharField(default='default', max_length=200),
+            model_name="productstock",
+            name="name",
+            field=models.CharField(default="default", max_length=200),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='productimage',
-            name='image',
-            field=models.ImageField(upload_to='directory/'),
+            model_name="productimage",
+            name="image",
+            field=models.ImageField(upload_to="directory/"),
         ),
     ]

@@ -71,10 +71,7 @@ def get_clean_color_and_quantity(text):
     else:
         number = quantity_number.strip()
 
-    stock = {
-        "color": color_text.strip(),
-        "quantity": number
-    }
+    stock = {"color": color_text.strip(), "quantity": number}
 
     return stock
 
@@ -159,7 +156,9 @@ def get_product_details(product_html_data):
 
 
 def get_product_images(product_html_data):
-    product_image_structure = product_html_data.select(".single-product-image-container")
+    product_image_structure = product_html_data.select(
+        ".single-product-image-container"
+    )
 
     product_images = product_image_structure[0].select(".single-product-image")
 
