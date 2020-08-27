@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import mark_safe
 
 
 class Business(models.Model):
@@ -43,6 +44,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    name = models.CharField(max_length=200)
     designer = models.CharField(max_length=100)
     product_description = models.ForeignKey(
         "ProductDescription", on_delete=models.CASCADE
@@ -67,7 +69,7 @@ class ProductDescription(models.Model):
     brand = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return self.category + " - " + self.name
 
     class Meta:
         verbose_name_plural = "Product Description"
@@ -85,6 +87,7 @@ class ProductPrice(models.Model):
 
 
 class ProductStock(models.Model):
+    name = models.CharField(max_length=200)
     colors = models.ForeignKey("ProductColor", on_delete=models.CASCADE)
     quantities = models.ForeignKey("ProductQuantity", on_delete=models.CASCADE)
 
@@ -144,12 +147,17 @@ class Season(models.Model):
         return self.name
 
 
-# TODO: Add names for better description in admin.
 class ProductImage(models.Model):
-    image = models.ImageField()
+    name = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='directory/')
+
+    def image_tag(self):
+        return mark_safe('<img src="/directory/%s" width="150" height="150" />' % self.image)
+
+    image_tag.short_description = 'Image'
 
     def _str_(self):
-        return self.image
+        return self.image.title
 
     class Meta:
         verbose_name_plural = "Product Images"

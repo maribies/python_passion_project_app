@@ -36,39 +36,127 @@ def get_products():
         return get_bao_bao.main()
 
 
-# TODO: Would make sense to separate business, designer, and products...
+# TODO: consider moving the creates to separate programs(?)
+# so the logic can be used for both creation/saving new
+# and also for checking/updating existing?
+def create_business():
+    business_data = get_business.main(input1)
+
+    for designer in business_data["designers"]:
+        business_designer = BusinessDesigner(name=designer)
+
+        business_designer.save()
+
+    for category in business_data["categories"]:
+        category = Category(name=category)
+
+        category.save()
+
+    business = Business(
+        name=business_data["name"],
+        site_url=business_data["site_url"],
+        designer=business_designer,
+        category=category,
+    )
+
+    return business
+
+
+def create_designer():
+    business_data = get_business.main(input1)
+    designer_data = get_designer.main(business_data, input2)
+
+    designer = Designer(
+        name=designer_data["name"], site_url=designer_data["site_url"]
+    )
+
+    return designer
+
+
+def create_product_description(product_description):
+    description = ProductDescription(
+            name=product_description["name"],
+            season=product_description["season"],
+            collection=product_description["collection"],
+            category=product_description["category"],
+            brand=product_description["brand"],
+        )
+
+    return description
+
+
+def create_product_price(product_price):
+    price = ProductPrice(
+        currency=product_price["currency"],
+        amount=float(product_price["amount"]),
+    )
+
+    return price
+
+
+def create_product_details(product_details):
+    details = ProductDetails(
+        material=product_details["material"],
+        size=product_details["size"],
+        dimensions=product_details["dimensions"],
+        sku=product_details["sku"],
+    )
+
+    return details
+
+
+def create_and_save_product_stock(product_data):
+    product_stock = product_data["stock"]
+    product_color = product_stock["color"]
+    product_quantity = product_stock["quantity"]
+    name = product_data["name"]
+
+    color = ProductColor(color=product_color)
+    color.save()
+
+    quantity = ProductQuantity(quantity=product_quantity)
+    quantity.save()
+
+    stock = ProductStock(name=name, colors=color, quantities=quantity)
+    stock.save()
+
+    return stock
+
+
+def create_and_save_product_images(product_data):
+    product_images = product_data["images"]
+    name = product_data["name"]
+
+    for product_image in product_images:
+        image = ProductImage(name=name, image=product_image)
+        image.save()
+
+    return image
+
+
+def create_and_save_product_objects(product_data):
+    description = create_product_description(product_data["product_description"])
+    price = create_product_price(product_data["product_price"])
+    details = create_product_details(product_data["product_details"])
+
+    description.save()
+    price.save()
+    details.save()
+
+    return {'description': description, 'price': price, 'details': details}
+
+
 class Command(BaseCommand):
     help = "Scrape for data"
 
     def handle(self, *args, **options):
-        business_data = get_business.main(input1)
-
-        for designer in business_data["designers"]:
-            business_designer = BusinessDesigner(name=designer)
-
-            business_designer.save()
-
-        for category in business_data["categories"]:
-            category = Category(name=category)
-
-            category.save()
-
-        business = Business(
-            name=business_data["name"],
-            site_url=business_data["site_url"],
-            designer=business_designer,
-            category=category,
-        )
+        business = create_business()
 
         business.save()
 
         self.stdout.write(self.style.SUCCESS("Successfully saved business."))
 
-        designer_data = get_designer.main(business_data, input2)
-
-        designer = Designer(
-            name=designer_data["name"], site_url=designer_data["site_url"]
-        )
+        designer = create_designer()
 
         designer.save()
 
@@ -80,58 +168,20 @@ class Command(BaseCommand):
             raise CommandError("No products data!")
 
         for product_data in products_data:
-            product_description = product_data["product_description"]
-            description = ProductDescription(
-                name=product_description["name"],
-                season=product_description["season"],
-                collection=product_description["collection"],
-                category=product_description["category"],
-                brand=product_description["brand"],
-            )
-            description.save()
+            product_objects = create_and_save_product_objects(product_data)
 
-            product_price = product_data["product_price"]
-            price = ProductPrice(
-                currency=product_price["currency"],
-                amount=float(product_price["amount"]),
-            )
-            price.save()
+            stock = create_and_save_product_stock(product_data)
 
-            product_stock = product_data["stock"]
-            product_colors = product_stock["colors"]
-            product_quantities = product_stock["quantities"]
-            for product_color in product_colors:
-                color = ProductColor(color=product_color)
-                color.save()
-
-            for product_quantity in product_quantities:
-                quantity = ProductQuantity(quantity=product_quantity)
-                quantity.save()
-
-            stock = ProductStock(colors=color, quantities=quantity)
-            stock.save()
-
-            product_details = product_data["product_details"]
-            details = ProductDetails(
-                material=product_details["material"],
-                size=product_details["size"],
-                dimensions=product_details["dimensions"],
-                sku=product_details["sku"],
-            )
-            details.save()
-
-            product_images = product_data["images"]
-            for product_image in product_images:
-                image = ProductImage(image=product_image)
-                image.save()
+            image = create_and_save_product_images(product_data)
 
             product = Product(
+                name=product_data["name"],
                 designer=product_data["designer"],
-                product_description=description,
-                product_price=price,
+                product_description=product_objects["description"],
+                product_price=product_objects["price"],
                 site_url=product_data["site_url"],
                 stock=stock,
-                product_details=details,
+                product_details=product_objects["details"],
                 condition=product_data["condition"],
                 image=image,
             )
