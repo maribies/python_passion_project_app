@@ -1,28 +1,69 @@
-<header>
-  <H1>Find and Seek</H1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      {% load static %}
 
-  <H2>FIND THE PERFECT PIECE FROM ANYWHERE ON THE INTERNET</H2>
-</header>
+      <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+      <link href="https://fonts.googleapis.com/css2?family=Fanwood+Text:ital@0;1&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+      <title>{% block title %}Find and Seek{% endblock %}</title>
+  </head>
 
-<main>
-  <H2>SEARCH</H2>
+  <body>
+    <header class="headerContainer">
+      <h1 class="title">Find and Seek</h1>
 
-  <aside>
-    <H2>FILTERS</H2>
-  </aside>
+      <h2 class="subtitle">FIND THE PERFECT PIECE FROM ANYWHERE ON THE INTERNET</h2>
+    </header>
 
-  <section>
-    <H2>RESULTS</H2>
+    <main class="grid">
+      <div class="searchContainer">
+        <h2 class="title searchTitle">SEARCH</h2>
+        <h3 class="searchBar">{{ name }}</h3>
+      </div>
 
-    <div>
-      <image src="/">
+      <aside class="filtersContainer">
+        <h2 class="title">FILTERS</h2>
 
-      <H3>Designer Name</H3>
-      <H3>Product Name</H3>
-      <p>Site Name</p>
-      <p>Product Description</p>
-      <p>Price</p>
-    </div>
-  </section>
-</main>
+        {% for business in businesses %}
+        <div>
+          <p>{{ business.name }}</p>
+        </div>
+        {% endfor %}
+
+        {% for designer in designers %}
+        <div>
+          <p>{{ designer.name }}</p>
+        </div>
+        {% endfor %}
+      </aside>
+
+      <section class="productsSection">
+        <h2 class="title">RESULTS</h2>
+
+        <div class="productsContainer">
+          {% for product in products %}
+          <div class="productContainer">
+            <a class="product" href="{{ product.site_url }}">
+              <img class="productImage" src="{{ product.image.image_url }}" alt="{{ product.product_description.name }}">
+
+              <h3 class="title">{{ product.designer }}</h3>
+              <h3 class="text">{{ product.product_description.name }}</h3>
+              <p class="text">{{ businesses.business.name }}</p>
+              <p class="text">{{ product.stock }}</p>
+              <p class="text">{{ product.product_details }}</p>
+              <p class="text">{{ product.product_price }}</p>
+            </a>
+          </div>
+          {% empty %}
+            <h2>NO RESULTS FOUND (YET!)</h2>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+  </body>
+
+  <footer class="footer">
+    <p>Powered by love of learning.</p>
+  </footer>
+</html>
 
