@@ -9,6 +9,5 @@ from .ProductDescription import ProductDescription
 from .ProductDetails import ProductDetails
 from .ProductImage import ProductImage
 from .ProductPrice import ProductPrice
-from .ProductQuantity import ProductQuantity
 from .ProductStock import ProductStock
 from .Season import Season

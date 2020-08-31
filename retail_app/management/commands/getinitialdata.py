@@ -11,7 +11,6 @@ from retail_app.models import (
     ProductDetails,
     ProductImage,
     ProductColor,
-    ProductQuantity,
 )
 
 import sys
@@ -102,33 +101,33 @@ def create_product_details(product_details):
     return details
 
 
-def create_and_save_product_stock(product_data):
+def create_and_save_product_stock(product_data, product):
     product_stock = product_data["stock"]
-    product_color = product_stock["color"]
-    product_quantity = product_stock["quantity"]
-    name = product_data["name"]
 
-    color = ProductColor(color=product_color)
-    color.save()
+    product_colors = product_stock["colors"]
+    product_quantities = product_stock["quantities"]
+    colors = []
 
-    quantity = ProductQuantity(quantity=product_quantity)
-    quantity.save()
+    for index, product_color in enumerate(product_colors):
+        color = ProductColor(color=product_color, quantity=product_quantities[index])
+        color.save()
+        colors.append(color)
 
-    stock = ProductStock(name=name, colors=color, quantities=quantity)
-    stock.save()
+        stock = ProductStock(color_stock=color, product=product)
+        stock.save()
 
     return stock
 
 
-def create_and_save_product_images(product_data):
+def create_and_save_product_images(product_data, product):
     product_images = product_data["images"]
-    name = product_data["name"]
+    images = []
 
     for product_image in product_images:
-        image = ProductImage(name=name, image=product_image)
+        image = ProductImage(product=product, image_url=product_image)
         image.save()
 
-    return image
+    return images
 
 
 def create_and_save_product_objects(product_data):
@@ -144,47 +143,72 @@ def create_and_save_product_objects(product_data):
 
 
 class Command(BaseCommand):
-    help = "Scrape for data"
+    help = "Scrape for data. --all saves business, designer, and products. To only opt for only one, run just the object to create and save ie --products"
+
+    def add_arguments(self, parser):
+        # Named (optional) arguments
+        parser.add_argument(
+            "--all", action="store_true", help="Scrape and save all data",
+        )
+
+        parser.add_argument(
+            "--products",
+            action="store_true",
+            help="Scrape and save only products data",
+        )
+
+        parser.add_argument(
+            "--business",
+            action="store_true",
+            help="Scrape and save only business data",
+        )
+
+        parser.add_argument(
+            "--designer",
+            action="store_true",
+            help="Scrape and save only designer data",
+        )
 
     def handle(self, *args, **options):
-        business = create_business()
+        if options["business"] or options["all"]:
+            business = create_business()
 
-        business.save()
+            business.save()
 
-        self.stdout.write(self.style.SUCCESS("Successfully saved business."))
+            self.stdout.write(self.style.SUCCESS("Successfully saved business."))
 
-        designer = create_designer()
+        if options["designer"] or options["all"]:
+            designer = create_designer()
 
-        designer.save()
+            designer.save()
 
-        self.stdout.write(self.style.SUCCESS("Successfully saved designer."))
+            self.stdout.write(self.style.SUCCESS("Successfully saved designer."))
 
-        products_data = get_products()
+        if options["products"] or options["all"]:
+            products_data = get_products()
 
-        if len(products_data) == 0 or products_data is None:
-            raise CommandError("No products data!")
+            if len(products_data) == 0 or products_data is None:
+                raise CommandError("No products data!")
 
-        for product_data in products_data:
-            product_objects = create_and_save_product_objects(product_data)
+            for product_data in products_data:
+                product_objects = create_and_save_product_objects(product_data)
 
-            stock = create_and_save_product_stock(product_data)
+                product = Product(
+                    name=product_data["name"],
+                    designer=product_data["designer"],
+                    product_description=product_objects["description"],
+                    product_price=product_objects["price"],
+                    site_url=product_data["site_url"],
+                    product_details=product_objects["details"],
+                    condition=product_data["condition"],
+                )
 
-            image = create_and_save_product_images(product_data)
+                product.save()
 
-            product = Product(
-                name=product_data["name"],
-                designer=product_data["designer"],
-                product_description=product_objects["description"],
-                product_price=product_objects["price"],
-                site_url=product_data["site_url"],
-                stock=stock,
-                product_details=product_objects["details"],
-                condition=product_data["condition"],
-                image=image,
+                create_and_save_product_stock(product_data, product)
+
+                create_and_save_product_images(product_data, product)
+
+            self.stdout.write(
+                self.style.SUCCESS("Successfully scraped and saved product data.")
             )
-
-            product.save()
-
-        self.stdout.write(
-            self.style.SUCCESS("Successfully scraped and saved product data.")
-        )

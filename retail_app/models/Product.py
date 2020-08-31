@@ -9,11 +9,9 @@ class Product(models.Model):
     )
     product_price = models.ForeignKey("ProductPrice", on_delete=models.CASCADE)
     site_url = models.URLField()
-    stock = models.ForeignKey("ProductStock", on_delete=models.CASCADE)
     product_details = models.ForeignKey("ProductDetails", on_delete=models.CASCADE)
     CONDITIONS = [(1, "New"), (2, "Preowned")]
     condition = models.CharField(choices=CONDITIONS, max_length=15)
-    image = models.ForeignKey("ProductImage", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.product_description.name

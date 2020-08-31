@@ -4,12 +4,16 @@ from .models import (
     Business,
     Designer,
     Product,
+    ProductImage,
+    ProductStock,
+    ProductDescription,
+    ProductDetails,
 )
 
 admin.site.register(Business)
 admin.site.register(Designer)
 admin.site.register(Product)
-
-
-fields = ["image_tag"]
-readonly_fields = ["image_tag"]
+admin.site.register(ProductImage)
+admin.site.register(ProductStock)
+admin.site.register(ProductDescription)
+admin.site.register(ProductDetails)
