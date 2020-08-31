@@ -109,11 +109,13 @@ def create_and_save_product_stock(product_data, product):
     colors = []
 
     for index, product_color in enumerate(product_colors):
-        color = ProductColor(color=product_color, quantity=product_quantities[index])
+        color = ProductColor(color=product_color)
         color.save()
         colors.append(color)
 
-        stock = ProductStock(color_stock=color, product=product)
+        stock = ProductStock(
+            color=color, product=product, quantity=product_quantities[index]
+        )
         stock.save()
 
     return stock
