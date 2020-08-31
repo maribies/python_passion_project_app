@@ -46,32 +46,38 @@ def get_product_description(product_html_data):
     return product_description
 
 
-# TODO: Color is still not matching product.
-# I think bc active class is updated by javascript?
-def get_clean_color_and_quantity(text):
-    color = re.search("(.*)(?=[0-9])", text)
-    quantity = re.search("[0-9](.*)", text)
+def get_clean_color_and_quantity(colors, stock):
+    product_colors_text, product_colors_availability = [], []
 
-    if color is not None and quantity is not None:
-        color_text = color.group(0)
-        quantity_text = quantity.group(0)
+    for index, stock_item in enumerate(stock):
+        text = stock[index].get_text()
 
-        hasNumberInColor = re.search(r"[^\d]*[\d]+[^\d]+([\d]+)", quantity_text)
+        color = re.search("(.*)(?=[0-9])", text)
+        quantity = re.search("[0-9](.*)", text)
 
-        if hasNumberInColor:
-            quantity_text = hasNumberInColor.group(1)
+        if color is not None and quantity is not None:
+            color_text = color.group(0)
+            quantity_text = quantity.group(0)
 
-    if color is None:
-        color_text = text
-        quantity_text = ""
+            hasNumberInColor = re.search(r"[^\d]*[\d]+[^\d]+([\d]+)", quantity_text)
 
-    quantity_number = "".join(re.findall("[0-9*,. ]", quantity_text))
-    if quantity_number == "":
-        number = None
-    else:
-        number = quantity_number.strip()
+            if hasNumberInColor:
+                quantity_text = hasNumberInColor.group(1)
 
-    stock = {"color": color_text.strip(), "quantity": number}
+        if color is None:
+            color_text = text
+            quantity_text = ""
+
+        quantity_number = "".join(re.findall("[0-9*,. ]", quantity_text))
+        if quantity_number == "":
+            number = None
+        else:
+            number = quantity_number.strip()
+
+        product_colors_text.append(color_text.strip())
+        product_colors_availability.append(number)
+
+    stock = {"colors": product_colors_text, "quantities": product_colors_availability}
 
     return stock
 
@@ -80,27 +86,12 @@ def get_product_color_and_quantity(product_html_data):
     colors = product_html_data.select(".single-product-colors")
 
     all_stock = colors[0].select(".single-product-color-title")
-    non_active_stock = colors[0].select(".single-product-color-title.faded-out")
 
-    def get_active_item():
-        if len(non_active_stock) == 0:
-            return all_stock[0]
-        else:
-            for index, non_active_item in enumerate(non_active_stock):
-                for item in all_stock:
-                    if item != non_active_item:
-                        return item
-
-    active_color = get_active_item()
-    active_color_text = active_color.get_text()
-
-    return active_color_text
+    return get_clean_color_and_quantity(colors, all_stock)
 
 
 def get_product_stock(product_html_data):
-    color_and_quantity = get_product_color_and_quantity(product_html_data)
-
-    stock = get_clean_color_and_quantity(color_and_quantity)
+    stock = get_product_color_and_quantity(product_html_data)
 
     return stock
 
@@ -125,8 +116,10 @@ def get_product_sku(product_html_data):
     colors = product_html_data.select(".single-product-colors")
     color_active = colors[0].select(".active")
 
-    # TODO: Clean result before '-'.
-    return color_active[0].get("data-product-sku")
+    # This formating gives the base SKU, and removes the color details.
+    sku = re.split(r"[-]\d+", color_active[0].get("data-product-sku"))
+
+    return sku[0]
 
 
 def get_product_details(product_html_data):
