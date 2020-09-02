@@ -1,9 +1,9 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.http import Http404
 
 from .models import Business, Designer, Product, ProductImage, ProductStock
 
-# Create your views here.
+
 def index(request):
     """The home page for the retail app, Find and Seek"""
 
@@ -15,8 +15,8 @@ def index(request):
         business_name = businesses[0].name
 
         for product in products:
-            product.images = ProductImage.objects.filter(product=product.pk)
-            product.stock = ProductStock.objects.filter(product=product.pk)
+            product.images = product.productimage_set.all()[0:2]
+            product.stock = product.productstock_set.all()
 
         context = {
             "products": products,
@@ -25,7 +25,7 @@ def index(request):
             "name": business_name,
         }
 
-    except businesses.DoesNotExist and designers.DoesNotExist:
-        raise Http404("Data does not exist!")
+    except IndexError or AttributeError:
+        raise Http404("Something went wrong!")
 
     return render(request, "retail_app/index.html", context)
