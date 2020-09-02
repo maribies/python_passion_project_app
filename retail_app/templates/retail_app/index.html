@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      {% load static %}
+
+      <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+      <link href="https://fonts.googleapis.com/css2?family=Fanwood+Text:ital@0;1&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+      <title>{% block title %}Find and Seek{% endblock %}</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+
+  <body>
+    <header class="headerContainer">
+      <h1 class="title">Find and Seek</h1>
+
+      <h2 class="subtitle">FIND THE PERFECT PIECE FROM ANYWHERE ON THE INTERNET</h2>
+    </header>
+
+    <main class="grid">
+      <div class="searchContainer">
+        <h2 class="title searchTitle">SEARCH</h2>
+        <h3 class="searchBar">{{ name }}</h3>
+      </div>
+
+      <aside class="filtersContainer">
+        <h2 class="title">FILTERS</h2>
+
+        {% for business in businesses %}
+        <div>
+          <p>{{ business.name }}</p>
+        </div>
+        {% endfor %}
+
+        {% for designer in designers %}
+        <div>
+          <p>{{ designer.name }}</p>
+        </div>
+        {% endfor %}
+      </aside>
+
+      <section class="productsSection">
+        <h2 class="title">RESULTS</h2>
+
+        <div class="productsContainer">
+          {% for product in products %}
+          <div class="productContainer">
+            <a class="product" href="{{ product.site_url }}">
+              {% for image in product.images|slice:"0:1" %}
+                <img class="productImage show" src="{{ image.image_url }}" alt="{{ image.product.product_description.name }}">
+              {% endfor %}
+              {% for image in product.images|slice:"1:2" %}
+                <img class="productImage hide" src="{{ image.image_url }}" alt="{{ image.product.product_description.name }}">
+              {% endfor %}
+
+              <h3 class="title">{{ product.designer }}</h3>
+              <h3 class="text">{{ product.product_description.name }}</h3>
+              <p class="text">{{ name }}</p>
+
+              <div class="stockContainer">
+                {% for stock in product.stock %}
+                  <div class="quantitiesContainer">
+                    <p class="text stock">{{ stock.color }}</p>
+                    <p class="text stock">{{ stock.quantity }}</p>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="productDescription hide">
+                <p class="text">{{ product.product_details.material }}</p>
+                <p class="text">{{ product.product_details.size }}</p>
+                <p class="text">{{ product.product_details.dimensions }}</p>
+                <p class="text">{{ product.product_details.sku }}</p>
+              </div>
+
+              <p class="text">{{ product.product_price }}</p>
+            </a>
+          </div>
+          {% empty %}
+            <h2 class="subtitle">NO RESULTS FOUND (YET!)</h2>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+
+    <script rel="stylesheet" type="text/javascript" src="{% static 'toggleProductInfo.js' %}"></script>
+  </body>
+
+  <footer class="footer">
+    <p>Powered by love of learning.</p>
+  </footer>
+</html>
+

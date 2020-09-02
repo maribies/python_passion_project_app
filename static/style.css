@@ -1,0 +1,149 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 21px;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 33px;
+}
+
+h2 {
+  font-size: 26px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+.title {
+  font-weight: 700;
+  font-family: 'Quattrocento', serif;
+}
+
+.subtitle {
+  font-family: 'Quattrocento', serif;
+  font-weight: 400;
+}
+
+.text {
+  font-family: 'Fanwood Text', serif;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);;
+  grid-template-areas: 
+    "search search search search"
+    "aside products products products";
+    grid-row-gap: 1.272rem; 
+    grid-column-gap: 1.272rem;
+  padding: 0 2rem;
+}
+
+.headerContainer {
+  grid-area: header;
+  padding: 1rem 2rem;
+}
+
+.searchContainer {
+  grid-area: search;
+}
+
+.productsSection {
+  grid-area: products;
+}
+
+.productsContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.filtersContainer {
+  grid-area: aside;
+  background-color: lavender;
+  border-radius: .5rem;
+  padding: .5rem;
+}
+
+.footer {
+  text-align: right;
+}
+
+.productImage {
+  width: 100%;
+  object-fit: cover;
+  min-height: 220px;
+}
+
+.productContainer {
+  padding: 1rem;
+  position: relative;
+}
+
+.product {
+  text-decoration: none;
+  color: black;
+}
+
+.searchTitle {
+  display: inline-block;
+}
+
+.searchBar {
+  display: inline-block;
+  margin-left: 1.5rem;
+  background-color: lavender;
+  border-radius: .5rem;
+  padding: .5rem;
+}
+
+.quantitiesContainer {
+  display: inline-flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.stock {
+  margin: 0;
+  text-align: center;
+  max-width: 3rem;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: inline-block;
+}
+
+@media screen and (min-width: 400px){
+  .productsContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid {
+    grid-template-columns: 1fr  1fr 2fr 1fr;
+    grid-template-areas: 
+      "search search search search search"
+      "aside products products products products";
+  }
+}
+
+@media screen and (min-width: 800px){
+  .productsContainer {
+  grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+
