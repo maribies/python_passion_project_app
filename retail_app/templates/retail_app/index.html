@@ -6,6 +6,8 @@
       <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
       <link href="https://fonts.googleapis.com/css2?family=Fanwood+Text:ital@0;1&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
       <title>{% block title %}Find and Seek{% endblock %}</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
 
   <body>
@@ -80,47 +82,12 @@
         </div>
       </section>
     </main>
+
+    <script rel="stylesheet" type="text/javascript" src="{% static 'toggleProductInfo.js' %}"></script>
   </body>
 
   <footer class="footer">
     <p>Powered by love of learning.</p>
   </footer>
-
-  <script type="text/javascript">
-    const products = document.getElementsByClassName('productContainer');
-    
-
-    (function() {
-      for (var i=0, len=products.length|0; i<len; i=i+1|0) {
-        products[i].addEventListener("mouseover", toggleProductInfo);
-      }
-    })();
-
-    function toggleProductInfo() {
-      const images = this.getElementsByClassName('productImage');
-      const stock = this.getElementsByClassName('stockContainer');
-      const description = this.getElementsByClassName('productDescription');
-
-      for (var i=0, len=images.length|0; i<len; i=i+1|0) {
-        if (images[i].classList.contains('show')) {
-          images[i].classList.remove('show');
-          images[i].classList.add('hide');
-        } else {
-          images[i].classList.remove('hide');
-          images[i].classList.add('show');
-        }
-      }
-
-      if (description[0].classList.contains('hide')) {
-        stock[0].classList.add('hide');
-        description[0].classList.remove('hide');
-        description[0].classList.add('show');
-      } else {
-        stock[0].classList.remove('hide');
-        description[0].classList.remove('show');
-        description[0].classList.add('hide');
-      }
-    };
-  </script>
 </html>
 

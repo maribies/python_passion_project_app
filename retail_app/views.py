@@ -8,16 +8,16 @@ def index(request):
     """The home page for the retail app, Find and Seek"""
 
     """Show all products, businesses, and designers."""
-    products = Product.objects.order_by("designer")
-    businesses = Business.objects.order_by("name")
-    designers = Designer.objects.order_by("name")
-    business_name = businesses[0].name
-
-    for product in products:
-        product.images = ProductImage.objects.filter(product=product.pk)
-        product.stock = ProductStock.objects.filter(product=product.pk)
-
     try:
+        products = Product.objects.order_by("designer")
+        businesses = Business.objects.order_by("name")
+        designers = Designer.objects.order_by("name")
+        business_name = businesses[0].name
+
+        for product in products:
+            product.images = ProductImage.objects.filter(product=product.pk)
+            product.stock = ProductStock.objects.filter(product=product.pk)
+
         context = {
             "products": products,
             "businesses": businesses,
@@ -26,6 +26,6 @@ def index(request):
         }
 
     except businesses.DoesNotExist and designers.DoesNotExist:
-        raise Http404("Data does not exist")
+        raise Http404("Data does not exist!")
 
     return render(request, "retail_app/index.html", context)
