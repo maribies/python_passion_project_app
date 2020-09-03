@@ -2,11 +2,13 @@
 
 from django.urls import path
 
-from . import views
+from .views import index, search
 
 app_name = "retail_app"
 
 urlpatterns = [
     # Home
-    path("", views.index, name="index")
+    path("", index, name="index"),
+    # Search results
+    path("search/", search, name="search"),
 ]

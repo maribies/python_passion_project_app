@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404
 
-from .models import Business, Designer, Product, ProductImage, ProductStock
+from retail_app.models import Business, Designer, Product, ProductImage, ProductStock
 
 
 def index(request):
