@@ -1,5 +1,6 @@
 from . import get_html
 import re
+from requests.exceptions import MissingSchema
 
 url = "https://www.shopbaobaoisseymiyake.com/shop-all"
 products = []
@@ -185,7 +186,18 @@ def get_product(product_url):
     product["designer"] = "Issey Miyake"
 
     # Get data structure for product.
-    product_html_data = get_html.main(product_url)
+    try:
+        product_html_data = get_html.main(product_url)
+    except MissingSchema:
+        print("Invalid product url. Trying to fix...")
+        print(product_url)
+        try:
+            retry_url = "https://www.shopbaobaoisseymiyake.com" + product_url
+
+            product_html_data = get_html.main(retry_url)
+        except MissingSchema:
+            print("Still invalid url. Skipping...")
+            return
 
     # Get data for each field & add to product dictonary.
     product["product_description"] = get_product_description(product_html_data)

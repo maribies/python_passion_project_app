@@ -145,35 +145,6 @@ def create_and_save_product_objects(product_data):
     return {"description": description, "price": price, "details": details}
 
 
-def create_and_save_product_keywords(product_data, product):
-    product_details = product_data["product_details"]
-    product_description = product_data["product_description"]
-    product_stock = product_data["stock"]
-
-    sku = product_details["sku"]
-    product_colors = product_stock["colors"]
-
-    keywords = (
-        sku
-        + " "
-        + product_description["name"]
-        + " "
-        + product_description["season"]
-        + " "
-        + product_description["collection"]
-        + " "
-        + product_description["brand"]
-        + " "
-        + product_data["designer"]
-    )
-
-    for product_color in product_colors:
-        keywords + product_color
-
-    keyword = SearchProductKeywords(product=product, keywords=keywords)
-    keyword.save()
-
-
 class Command(BaseCommand):
     help = "Scrape for data. --all saves business, designer, and products. To only opt for only one, run just the object to create and save ie --products"
 
@@ -241,7 +212,7 @@ class Command(BaseCommand):
 
                 create_and_save_product_images(product_data, product)
 
-                create_and_save_product_keywords(product_data, product)
+                SearchProductKeywords.create_keywords(product_data, product)
 
             self.stdout.write(
                 self.style.SUCCESS("Successfully scraped and saved product data.")
