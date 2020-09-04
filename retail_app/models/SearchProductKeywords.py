@@ -9,4 +9,4 @@ class SearchProductKeywords(models.Model):
         verbose_name_plural = "Search All Product Keywords"
 
     def __str__(self):
-        return str(self.product) + " search keywords"
+        return str(self.keywords)
