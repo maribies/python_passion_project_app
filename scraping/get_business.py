@@ -17,5 +17,5 @@ def get_business(input):
     return Businesses[input]
 
 
-def main(input):
+def get_business_data(input):
     return get_business(input)

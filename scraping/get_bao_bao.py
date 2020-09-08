@@ -187,10 +187,9 @@ def get_product(product_url):
 
     # Get data structure for product.
     try:
-        product_html_data = get_html.main(product_url)
+        product_html_data = get_html.get_html_data(product_url)
     except MissingSchema:
-        print("Invalid product url. Trying to fix...")
-        print(product_url)
+        print("Invalid product url. Trying to fix..." + product_url)
         try:
             retry_url = "https://www.shopbaobaoisseymiyake.com" + product_url
 
@@ -206,8 +205,6 @@ def get_product(product_url):
     product["product_price"] = get_product_price(product_html_data)
     product["product_details"] = get_product_details(product_html_data)
     product["images"] = get_product_images(product_html_data)
-
-    # Add product condition to product dictonary.
     product["condition"] = "New"
 
     return product
@@ -225,7 +222,7 @@ def get_products(product_urls):
     return products
 
 
-def main():
+def get_site_data():
     # Get the html data.
     html_data = get_html.main(url)
 

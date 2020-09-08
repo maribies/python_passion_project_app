@@ -15,7 +15,7 @@ def parse_html(html_doc):
     return BeautifulSoup(html_doc, "html.parser")
 
 
-def main(url):
+def get_html_data(url):
     html_doc = make_request(url)
 
     html_data = parse_html(html_doc)

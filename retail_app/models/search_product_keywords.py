@@ -28,16 +28,13 @@ class SearchProductKeywords(models.Model):
             + product_data["designer"]
         )
 
-        keywords += (" " + " ".join(product_colors))
+        keywords += " " + " ".join(product_colors)
 
-        SearchProductKeywords.objects.update_or_create(
-                    product=product,
-                    keywords=keywords
-                )
+        search_keywords = SearchProductKeywords.objects.update_or_create(
+            product=product, keywords=keywords
+        )
 
-        searchKeywords = cls(product, keywords)
-
-        return searchKeywords
+        return search_keywords
 
     class Meta:
         verbose_name_plural = "Search All Product Keywords"
