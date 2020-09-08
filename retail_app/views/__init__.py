@@ -1,2 +1,2 @@
-from .Home import index
-from .Search import search
+from .home import index
+from .search import search

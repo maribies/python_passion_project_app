@@ -14,17 +14,13 @@ from retail_app.models import (
     SearchProductKeywords,
 )
 
-import sys
-
-sys.path.append("../scraping")
-
 from scraping import get_bao_bao, get_business, get_designer
 
 # TODO: Turn inputs into prompts from terminal.
 # For now, will ask for both business and designer to make it easier.
 # In future add a flag for all to get and update all designers by business.
 # Use similar logic for a command to update the data,
-# as saving creates new instances.
+# as saving creates new instances, and move to class methods?
 input1 = "Bao Bao"
 input2 = "Issey Miyake"
 
@@ -33,14 +29,11 @@ def get_products():
     # TODO: Return file name for scraping site in same format so can select
     # dynamically.
     if input1 == "Bao Bao":
-        return get_bao_bao.main()
+        return get_bao_bao.get_site_data()
 
 
-# TODO: consider moving the creates to separate programs(?)
-# so the logic can be used for both creation/saving new
-# and also for checking/updating existing?
 def create_business():
-    business_data = get_business.main(input1)
+    business_data = get_business.get_business_data(input1)
 
     for designer in business_data["designers"]:
         business_designer = BusinessDesigner(name=designer)
@@ -63,8 +56,8 @@ def create_business():
 
 
 def create_designer():
-    business_data = get_business.main(input1)
-    designer_data = get_designer.main(business_data, input2)
+    business_data = get_business.get_business_data(input1)
+    designer_data = get_designer.get_designer_data(business_data, input2)
 
     designer = Designer(name=designer_data["name"], site_url=designer_data["site_url"])
 
@@ -145,11 +138,19 @@ def create_and_save_product_objects(product_data):
     return {"description": description, "price": price, "details": details}
 
 
+def option_invalid(options):
+    return not (
+        options["all"]
+        or options["business"]
+        or options["designer"]
+        or options["products"]
+    )
+
+
 class Command(BaseCommand):
     help = "Scrape for data. --all saves business, designer, and products. To only opt for only one, run just the object to create and save ie --products"
 
     def add_arguments(self, parser):
-        # Named (optional) arguments
         parser.add_argument(
             "--all", action="store_true", help="Scrape and save all data",
         )
@@ -216,4 +217,9 @@ class Command(BaseCommand):
 
             self.stdout.write(
                 self.style.SUCCESS("Successfully scraped and saved product data.")
+            )
+
+        if option_invalid(options):
+            self.stdout.write(
+                self.style.ERROR("An argument is needed. See help for more details.")
             )

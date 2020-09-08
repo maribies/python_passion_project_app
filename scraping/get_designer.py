@@ -9,7 +9,7 @@ def get_url(business):
         return business["site_url"]
 
 
-def main(business, designer):
+def get_designer_data(business, designer):
     url = get_url(business)
 
     Designer = {"name": designer, "site_url": url}

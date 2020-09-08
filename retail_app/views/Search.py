@@ -1,13 +1,9 @@
 from django.shortcuts import render
 from django.http import Http404
-from django.db.models import Q
 
 from retail_app.models import (
     Business,
     Designer,
-    Product,
-    ProductImage,
-    ProductStock,
     SearchProductKeywords,
 )
 
@@ -42,4 +38,4 @@ def search(request):
     except IndexError or AttributeError or ValueError:
         raise Http404("Something went wrong!")
 
-    return render(request, "retail_app/searchContent.html", context)
+    return render(request, "retail_app/search_content.html", context)
