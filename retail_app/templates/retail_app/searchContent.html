@@ -1,7 +1,10 @@
 {% extends "retail_app/base.html" %}
 
 {% block content %}
-  <h2>Featured</h2>
+  <h2 class="title results">Results</h2>
+
+  <h3 class="text results">for "{{query}}"</h3>
+  <h3 class="text results">{{results}} items</h3>
 
   <div class="productsContainer">
     {% for product in products %}

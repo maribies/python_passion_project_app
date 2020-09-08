@@ -11,6 +11,7 @@ from retail_app.models import (
     ProductDetails,
     ProductImage,
     ProductColor,
+    SearchProductKeywords,
 )
 
 import sys
@@ -210,6 +211,8 @@ class Command(BaseCommand):
                 create_and_save_product_stock(product_data, product)
 
                 create_and_save_product_images(product_data, product)
+
+                SearchProductKeywords.create_keywords(product_data, product)
 
             self.stdout.write(
                 self.style.SUCCESS("Successfully scraped and saved product data.")

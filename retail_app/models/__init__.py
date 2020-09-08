@@ -11,3 +11,4 @@ from .ProductImage import ProductImage
 from .ProductPrice import ProductPrice
 from .ProductStock import ProductStock
 from .Season import Season
+from .SearchProductKeywords import SearchProductKeywords
