@@ -193,7 +193,7 @@ def get_product(product_url):
         try:
             retry_url = "https://www.shopbaobaoisseymiyake.com" + product_url
 
-            product_html_data = get_html.main(retry_url)
+            product_html_data = get_html.get_html_data(retry_url)
         except MissingSchema:
             print("Still invalid url. Skipping...")
             return
@@ -224,7 +224,7 @@ def get_products(product_urls):
 
 def get_site_data():
     # Get the html data.
-    html_data = get_html.main(url)
+    html_data = get_html.get_html_data(url)
 
     print("HTML data successfully scraped.")
 
