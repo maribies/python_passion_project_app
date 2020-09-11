@@ -24,9 +24,9 @@ python manage.py getinitialdata -all
 This command will scrape and initiate new classes for the business, designer, and site. (The flag can be updated for just the individual classes needed.)
 
 
-Running the local server-
+Running the local server (now with coverage)-
 ```
-python manage.py runserver
+coverage run manage.py runserver
 ```
 
 ## Production
