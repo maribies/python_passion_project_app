@@ -15,6 +15,12 @@ To Run the interactive shell-
 pipenv shell
 ```
 
+### Testing
+To run tests, start shell and enter:
+```
+python manage.py test
+```
+
 ## Usage
 
 Scraping/Getting data-
