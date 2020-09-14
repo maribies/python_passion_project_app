@@ -18,7 +18,7 @@ pipenv shell
 ### Testing
 To run tests, start shell and enter:
 ```
-python manage.py test retail_app.tests
+python manage.py test
 ```
 
 ## Usage
