@@ -47,3 +47,8 @@ class ProductImageTest(TestCase):
         image = ProductImage.objects.get(image_url="https://www.imageurl.jpeg")
 
         self.assertEqual(image.image_url, "https://www.imageurl.jpeg")
+
+    def test_product(self):
+        image = ProductImage.objects.get(product=1)
+
+        self.assertEqual(image.product.name, "Test Product")

@@ -9,9 +9,9 @@ from retail_app.models import (
 
 
 class SearchProductKeywordsTest(TestCase):
-    """SearchProductKeywords correctly returns keywords"""
+    """SearchProductKeywords correctly returns attributes and creates keywords"""
 
-    def setUp(self):
+    def setUp_product(self):
         description = ProductDescription.objects.create(
             name="Test Product Description Name",
             season="SS20",
@@ -39,6 +39,10 @@ class SearchProductKeywordsTest(TestCase):
             condition="New",
         )
 
+        return product
+
+    def setUp(self):
+        product = SearchProductKeywordsTest.setUp_product(self)
         SearchProductKeywords.objects.create(
             product=product, keywords="some keywords to search for things in a string"
         )
@@ -48,4 +52,32 @@ class SearchProductKeywordsTest(TestCase):
 
         self.assertEqual(
             search.keywords, "some keywords to search for things in a string"
+        )
+
+    def test_product(self):
+        search = SearchProductKeywords.objects.get(product=1)
+
+        self.assertEqual(search.product.name, "Test Product")
+
+    def test_keywords_create(self):
+        product = SearchProductKeywordsTest.setUp_product(self)
+
+        product_data = {
+            "product_details": {"sku": "123testsku12"},
+            "product_description": {
+                "name": "test data name",
+                "season": "ss20",
+                "collection": "test collection",
+                "brand": "test brand",
+            },
+            "designer": "test designer",
+            "stock": {"colors": ["purple", "black", "gunmetal"]},
+        }
+
+        SearchProductKeywords.create_keywords(product_data, product)
+        search = SearchProductKeywords.objects.get(product=2)
+
+        self.assertEqual(
+            search.keywords,
+            "123testsku12 test data name ss20 test collection test brand test designer purple black gunmetal",
         )

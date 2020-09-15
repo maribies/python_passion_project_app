@@ -45,6 +45,16 @@ class ProductStockTest(TestCase):
         ProductStock.objects.create(product=product, color=color, quantity=1)
 
     def test_quantity(self):
-        stock = ProductStock.objects.get(color=1)
+        stock = ProductStock.objects.get(quantity=1)
 
         self.assertEqual(stock.quantity, 1)
+
+    def test_product(self):
+        stock = ProductStock.objects.get(product=1)
+
+        self.assertEqual(stock.product.name, "Test Product")
+
+    def test_color(self):
+        stock = ProductStock.objects.get(color=1)
+
+        self.assertEqual(stock.color.color, "purple")
