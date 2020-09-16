@@ -1,17 +1,13 @@
 from django.test import TestCase
 from retail_app.models import ProductDetails
+from model_bakery import baker
 
 
 class ProductDetailsTest(TestCase):
-    """ProductDetails correctly returns sku"""
+    """ProductDetails correctly returns attributes"""
 
     def setUp(self):
-        ProductDetails.objects.create(
-            material="test materials made of lots of things",
-            size="OS",
-            dimensions="10in long and 18in wide and 3in depth",
-            sku="TESTSKU89012",
-        )
+        self.details = baker.make_recipe("retail_app.details_test")
 
     def test_sku(self):
         details = ProductDetails.objects.get(sku="TESTSKU89012")

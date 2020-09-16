@@ -1,18 +1,13 @@
 from django.test import TestCase
 from retail_app.models import ProductDescription
+from model_bakery import baker
 
 
 class ProductDescriptionTest(TestCase):
-    """ProductDescription correctly returns name"""
+    """ProductDescription correctly returns attributes"""
 
     def setUp(self):
-        ProductDescription.objects.create(
-            name="Test Product Description Name",
-            season="SS20",
-            collection="Test Collection",
-            category="Handbags",
-            brand="Test Brand",
-        )
+        self.category = baker.make_recipe("retail_app.description_test")
 
     def test_name(self):
         description = ProductDescription.objects.get(

@@ -1,14 +1,13 @@
 from django.test import TestCase
 from retail_app.models import Designer
+from model_bakery import baker
 
 
 class DesignerTest(TestCase):
     """Designer correctly returns attributes"""
 
     def setUp(self):
-        Designer.objects.create(
-            name="Test Designer", site_url="https://www.testdesignersite.com"
-        )
+        self.designer = baker.make_recipe("retail_app.designer_test")
 
     def test_name(self):
         designer = Designer.objects.get(name="Test Designer")

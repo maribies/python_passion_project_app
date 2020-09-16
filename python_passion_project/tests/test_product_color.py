@@ -1,12 +1,13 @@
 from django.test import TestCase
 from retail_app.models import ProductColor
+from model_bakery import baker
 
 
 class ProductColorTest(TestCase):
-    """ProductColor correctly returns color"""
+    """ProductColor correctly returns attribute"""
 
     def setUp(self):
-        ProductColor.objects.create(color="purple")
+        self.color = baker.make_recipe("retail_app.color_test")
 
     def test_color(self):
         color = ProductColor.objects.get(color="purple")

@@ -1,37 +1,13 @@
 from django.test import TestCase
-from retail_app.models import Product, ProductDescription, ProductPrice, ProductDetails
+from retail_app.models import Product
+from model_bakery import baker
 
 
 class ProductTest(TestCase):
     """Product correctly returns attributes"""
 
     def setUp(self):
-        description = ProductDescription.objects.create(
-            name="Test Product Description Name",
-            season="SS20",
-            collection="Test Collection",
-            category="Handbags",
-            brand="Test Brand",
-        )
-
-        price = ProductPrice.objects.create(currency="$", amount=1234.56)
-
-        details = ProductDetails.objects.create(
-            material="test materials made of lots of things",
-            size="OS",
-            dimensions="10in long and 18in wide and 3in depth",
-            sku="TESTSKU89012",
-        )
-
-        Product.objects.create(
-            name="Test Product",
-            designer="Test Designer",
-            product_description=description,
-            product_price=price,
-            site_url="https://www.testsite.com",
-            product_details=details,
-            condition="New",
-        )
+        self.product = baker.make_recipe("retail_app.product_test")
 
     def test_name(self):
         product = Product.objects.get(name="Test Product")

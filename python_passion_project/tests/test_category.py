@@ -1,14 +1,13 @@
 from django.test import TestCase
 from retail_app.models import Category
+from model_bakery import baker
 
 
 class CategoryTest(TestCase):
-    """Cateogry correctly returns name"""
+    """Cateogry correctly returns attribute"""
 
     def setUp(self):
-        Category.objects.create(
-            name="Test Category",
-        )
+        self.category = baker.make_recipe("retail_app.category_test")
 
     def test_name(self):
         category = Category.objects.get(name="Test Category")

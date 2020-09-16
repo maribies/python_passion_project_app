@@ -1,51 +1,13 @@
 from django.test import TestCase
-from retail_app.models import (
-    SearchProductKeywords,
-    Product,
-    ProductDescription,
-    ProductDetails,
-    ProductPrice,
-)
+from retail_app.models import SearchProductKeywords
+from model_bakery import baker
 
 
 class SearchProductKeywordsTest(TestCase):
     """SearchProductKeywords correctly returns attributes and creates keywords"""
 
-    def setUp_product(self):
-        description = ProductDescription.objects.create(
-            name="Test Product Description Name",
-            season="SS20",
-            collection="Test Collection",
-            category="Handbags",
-            brand="Test Brand",
-        )
-
-        price = ProductPrice.objects.create(currency="$", amount=1234.56)
-
-        details = ProductDetails.objects.create(
-            material="test materials made of lots of things",
-            size="OS",
-            dimensions="10in long and 18in wide and 3in depth",
-            sku="TESTSKU89012",
-        )
-
-        product = Product.objects.create(
-            name="Test Product",
-            designer="Test Designer",
-            product_description=description,
-            product_price=price,
-            site_url="https://www.testsite.com",
-            product_details=details,
-            condition="New",
-        )
-
-        return product
-
     def setUp(self):
-        product = SearchProductKeywordsTest.setUp_product(self)
-        SearchProductKeywords.objects.create(
-            product=product, keywords="some keywords to search for things in a string"
-        )
+        self.search = baker.make_recipe("retail_app.search_test")
 
     def test_keywords(self):
         search = SearchProductKeywords.objects.get(product=1)
@@ -60,7 +22,7 @@ class SearchProductKeywordsTest(TestCase):
         self.assertEqual(search.product.name, "Test Product")
 
     def test_keywords_create(self):
-        product = SearchProductKeywordsTest.setUp_product(self)
+        product = self.search = baker.make_recipe("retail_app.product_test")
 
         product_data = {
             "product_details": {"sku": "123testsku12"},
