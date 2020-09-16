@@ -5,8 +5,6 @@ from .collection import Collection
 from .designer import Designer
 from .product import Product
 from .product_color import ProductColor
-from .product_description import ProductDescription
-from .product_details import ProductDetails
 from .product_image import ProductImage
 from .product_price import ProductPrice
 from .product_stock import ProductStock
