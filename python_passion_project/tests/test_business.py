@@ -6,9 +6,13 @@ class BusinessTest(TestCase):
     """Business correctly returns name"""
 
     def setUp(self):
-        designer = BusinessDesigner.objects.create(name="Test Designer",)
+        designer = BusinessDesigner.objects.create(
+            name="Test Designer",
+        )
 
-        category = Category.objects.create(name="Test Designer",)
+        category = Category.objects.create(
+            name="Test Designer",
+        )
 
         Business.objects.create(
             name="Test Product",

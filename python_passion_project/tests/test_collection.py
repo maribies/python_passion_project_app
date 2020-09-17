@@ -6,7 +6,9 @@ class CollectionTest(TestCase):
     """Collection correctly returns name"""
 
     def setUp(self):
-        Collection.objects.create(name="Test Collection",)
+        Collection.objects.create(
+            name="Test Collection",
+        )
 
     def test_name(self):
         collection = Collection.objects.get(name="Test Collection")
