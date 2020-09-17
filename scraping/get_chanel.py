@@ -10,21 +10,21 @@ def get_site_data():
     return html_data
 
 
-def get_ajax_request(page=1):
-    ajax_data = get_html.make_request(f"https://www.chanel.com/us/fashion/handbags/c/1x1x1/?requestType=ajax&page={page}&totalElementsCount=24")
+def get_products(page=1):
+    products_data = get_html.make_request(f"https://www.chanel.com/us/fashion/handbags/c/1x1x1/?requestType=ajax&page={page}&totalElementsCount=24")
 
-    return ajax_data
+    return products_data
 
 
-def check_ajax_next_page(page=1):
-    ajax_data = get_ajax_request(page)
+def check_products_next_page(page=1):
+    products_data = get_products(page)
 
-    data = json.loads(ajax_data)
+    data = json.loads(products_data)
 
     return data["next"]
 
 
-# Getting from the scraping of the website here, but could've gotten from the ajax request- "totalResults".
+# Getting from the scraping of the website here, but could've gotten from the request- "totalResults".
 def get_total_results():
     html_data = get_site_data()
 
@@ -46,4 +46,4 @@ def get_last_page_number():
 def check_last_page():
     last_page_number = get_last_page_number()
 
-    return check_ajax_next_page(last_page_number)
+    return check_products_next_page(last_page_number)
