@@ -78,7 +78,8 @@ def create_product_description(product_description):
 
 def create_product_price(product_price):
     price = ProductPrice(
-        currency=product_price["currency"], amount=float(product_price["amount"]),
+        currency=product_price["currency"],
+        amount=float(product_price["amount"]),
     )
 
     return price
@@ -152,7 +153,9 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            "--all", action="store_true", help="Scrape and save all data",
+            "--all",
+            action="store_true",
+            help="Scrape and save all data",
         )
 
         parser.add_argument(

@@ -11,7 +11,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name="productcolor", options={"verbose_name_plural": "Product Color"},
+            name="productcolor",
+            options={"verbose_name_plural": "Product Color"},
         ),
         migrations.AddField(
             model_name="productcolor",

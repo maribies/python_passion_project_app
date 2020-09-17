@@ -4,8 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-black = "*"
 flake8 = "*"
+black = "*"
 
 [packages]
 requests = "*"
@@ -16,6 +16,10 @@ django-heroku = "*"
 gunicorn = "*"
 pillow = "*"
 coverage = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

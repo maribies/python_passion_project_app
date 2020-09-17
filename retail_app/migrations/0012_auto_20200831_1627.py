@@ -11,9 +11,14 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name="productstock", old_name="color_stock", new_name="color",
+            model_name="productstock",
+            old_name="color_stock",
+            new_name="color",
         ),
-        migrations.RemoveField(model_name="productcolor", name="quantity",),
+        migrations.RemoveField(
+            model_name="productcolor",
+            name="quantity",
+        ),
         migrations.AddField(
             model_name="productstock",
             name="quantity",

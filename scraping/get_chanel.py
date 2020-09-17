@@ -5,13 +5,17 @@ import math
 
 
 def get_site_data():
-    html_data = get_html.get_html_data("https://www.chanel.com/us/fashion/handbags/c/1x1x1/")
+    html_data = get_html.get_html_data(
+        "https://www.chanel.com/us/fashion/handbags/c/1x1x1/"
+    )
 
     return html_data
 
 
 def get_products(page=1):
-    products_data = get_html.make_request(f"https://www.chanel.com/us/fashion/handbags/c/1x1x1/?requestType=ajax&page={page}&totalElementsCount=24")
+    products_data = get_html.make_request(
+        f"https://www.chanel.com/us/fashion/handbags/c/1x1x1/?requestType=ajax&page={page}&totalElementsCount=24"
+    )
 
     return products_data
 

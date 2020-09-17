@@ -25,7 +25,9 @@ class Migration(migrations.Migration):
                 ),
                 ("name", models.CharField(max_length=50)),
             ],
-            options={"verbose_name_plural": "Business Designers",},
+            options={
+                "verbose_name_plural": "Business Designers",
+            },
         ),
         migrations.CreateModel(
             name="Product_Color",
@@ -57,13 +59,34 @@ class Migration(migrations.Migration):
                 ("quantity", models.IntegerField()),
             ],
         ),
-        migrations.RemoveField(model_name="category", name="product",),
-        migrations.RemoveField(model_name="designer", name="category",),
-        migrations.RemoveField(model_name="designer", name="collection",),
-        migrations.RemoveField(model_name="designer", name="product",),
-        migrations.RemoveField(model_name="designer", name="season",),
-        migrations.RemoveField(model_name="product_stock", name="color",),
-        migrations.RemoveField(model_name="product_stock", name="quantity",),
+        migrations.RemoveField(
+            model_name="category",
+            name="product",
+        ),
+        migrations.RemoveField(
+            model_name="designer",
+            name="category",
+        ),
+        migrations.RemoveField(
+            model_name="designer",
+            name="collection",
+        ),
+        migrations.RemoveField(
+            model_name="designer",
+            name="product",
+        ),
+        migrations.RemoveField(
+            model_name="designer",
+            name="season",
+        ),
+        migrations.RemoveField(
+            model_name="product_stock",
+            name="color",
+        ),
+        migrations.RemoveField(
+            model_name="product_stock",
+            name="quantity",
+        ),
         migrations.AddField(
             model_name="product_description",
             name="brand",

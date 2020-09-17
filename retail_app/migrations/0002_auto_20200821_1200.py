@@ -26,7 +26,10 @@ class Migration(migrations.Migration):
                 ("image", models.ImageField(upload_to="")),
             ],
         ),
-        migrations.RenameModel(old_name="Stock", new_name="Product_Stock",),
+        migrations.RenameModel(
+            old_name="Stock",
+            new_name="Product_Stock",
+        ),
         migrations.AlterField(
             model_name="product",
             name="image",
