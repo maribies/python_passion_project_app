@@ -6,7 +6,9 @@ class CategoryTest(TestCase):
     """Cateogry correctly returns name"""
 
     def setUp(self):
-        Category.objects.create(name="Test Category",)
+        Category.objects.create(
+            name="Test Category",
+        )
 
     def test_name(self):
         category = Category.objects.get(name="Test Category")
