@@ -10,6 +10,4 @@ class BusinessDesignerTest(TestCase):
         self.business_designer = baker.make_recipe("retail_app.business_designer_test")
 
     def test_name(self):
-        designer = BusinessDesigner.objects.get(name="Test Designer")
-
-        self.assertEqual(designer.name, "Test Designer")
+        self.assertEqual(self.business_designer.name, "Test Designer")

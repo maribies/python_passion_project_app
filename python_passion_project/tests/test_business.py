@@ -10,11 +10,7 @@ class BusinessTest(TestCase):
         self.business = baker.make_recipe("retail_app.business_test")
 
     def test_name(self):
-        business = Business.objects.get(name="Test Business")
-
-        self.assertEqual(business.name, "Test Business")
+        self.assertEqual(self.business.name, "Test Business")
 
     def test_site_url(self):
-        business = Business.objects.get(site_url="https://www.testsite.com")
-
-        self.assertEqual(business.site_url, "https://www.testsite.com")
+        self.assertEqual(self.business.site_url, "https://www.testsite.com")

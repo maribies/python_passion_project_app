@@ -10,11 +10,7 @@ class DesignerTest(TestCase):
         self.designer = baker.make_recipe("retail_app.designer_test")
 
     def test_name(self):
-        designer = Designer.objects.get(name="Test Designer")
-
-        self.assertEqual(designer.name, "Test Designer")
+        self.assertEqual(self.designer.name, "Test Designer")
 
     def test_site_url(self):
-        designer = Designer.objects.get(site_url="https://www.testdesignersite.com")
-
-        self.assertEqual(designer.site_url, "https://www.testdesignersite.com")
+        self.assertEqual(self.designer.site_url, "https://www.testdesignersite.com")

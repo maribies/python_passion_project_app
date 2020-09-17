@@ -13,6 +13,7 @@ from retail_app.models import (
     SearchProductKeywords,
     Season,
 )
+from decimal import Decimal
 
 business_designer_test = Recipe(BusinessDesigner, name="Test Designer",)
 
@@ -32,7 +33,7 @@ designer_test = Recipe(
     Designer, name="Test Designer", site_url="https://www.testdesignersite.com"
 )
 
-price_test = Recipe(ProductPrice, currency="$", amount=1234.56)
+price_test = Recipe(ProductPrice, currency="$", amount=Decimal("1234.56"))
 
 product_test = Recipe(
     Product,

@@ -10,16 +10,12 @@ class SearchProductKeywordsTest(TestCase):
         self.search = baker.make_recipe("retail_app.search_test")
 
     def test_keywords(self):
-        search = SearchProductKeywords.objects.get(product=1)
-
         self.assertEqual(
-            search.keywords, "some keywords to search for things in a string"
+            self.search.keywords, "some keywords to search for things in a string"
         )
 
     def test_product(self):
-        search = SearchProductKeywords.objects.get(product=1)
-
-        self.assertEqual(search.product.name, "Test Product")
+        self.assertEqual(self.search.product.name, "Test Product")
 
     def test_keywords_create(self):
         product = self.search = baker.make_recipe("retail_app.product_test")

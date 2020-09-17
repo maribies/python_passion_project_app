@@ -4,12 +4,10 @@ from model_bakery import baker
 
 
 class CategoryTest(TestCase):
-    """Cateogry correctly returns attribute"""
+    """Category correctly returns attribute"""
 
     def setUp(self):
         self.category = baker.make_recipe("retail_app.category_test")
 
     def test_name(self):
-        category = Category.objects.get(name="Test Category")
-
-        self.assertEqual(category.name, "Test Category")
+        self.assertEqual(self.category.name, "Test Category")

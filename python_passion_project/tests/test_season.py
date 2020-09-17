@@ -10,6 +10,4 @@ class SeasonTest(TestCase):
         self.season = baker.make_recipe("retail_app.season_test")
 
     def test_name(self):
-        season = Season.objects.get(name="SS20")
-
-        self.assertEqual(season.name, "SS20")
+        self.assertEqual(self.season.name, "SS20")

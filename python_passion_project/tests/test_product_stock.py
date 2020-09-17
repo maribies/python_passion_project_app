@@ -10,16 +10,10 @@ class ProductStockTest(TestCase):
         self.stock = baker.make_recipe("retail_app.stock_test")
 
     def test_quantity(self):
-        stock = ProductStock.objects.get(quantity=1)
-
-        self.assertEqual(stock.quantity, 1)
+        self.assertEqual(self.stock.quantity, 1)
 
     def test_product(self):
-        stock = ProductStock.objects.get(product=1)
-
-        self.assertEqual(stock.product.name, "Test Product")
+        self.assertEqual(self.stock.product.name, "Test Product")
 
     def test_color(self):
-        stock = ProductStock.objects.get(color=1)
-
-        self.assertEqual(stock.color.color, "purple")
+        self.assertEqual(self.stock.color.color, "purple")

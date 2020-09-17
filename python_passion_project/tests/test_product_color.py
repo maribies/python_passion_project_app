@@ -10,6 +10,4 @@ class ProductColorTest(TestCase):
         self.color = baker.make_recipe("retail_app.color_test")
 
     def test_color(self):
-        color = ProductColor.objects.get(color="purple")
-
-        self.assertEqual(color.color, "purple")
+        self.assertEqual(self.color.color, "purple")

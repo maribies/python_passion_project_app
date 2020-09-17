@@ -10,6 +10,4 @@ class CollectionTest(TestCase):
         self.collection = baker.make_recipe("retail_app.collection_test")
 
     def test_name(self):
-        collection = Collection.objects.get(name="Test Collection")
-
-        self.assertEqual(collection.name, "Test Collection")
+        self.assertEqual(self.collection.name, "Test Collection")
