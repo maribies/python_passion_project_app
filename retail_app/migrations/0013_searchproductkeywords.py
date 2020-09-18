@@ -32,6 +32,8 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={"verbose_name_plural": "Search All Product Keywords",},
+            options={
+                "verbose_name_plural": "Search All Product Keywords",
+            },
         ),
     ]

@@ -10,27 +10,37 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameModel(old_name="Price", new_name="Product_Price",),
-        migrations.AlterModelOptions(
-            name="business", options={"verbose_name_plural": "Businesses"},
+        migrations.RenameModel(
+            old_name="Price",
+            new_name="Product_Price",
         ),
         migrations.AlterModelOptions(
-            name="category", options={"verbose_name_plural": "Categories"},
+            name="business",
+            options={"verbose_name_plural": "Businesses"},
+        ),
+        migrations.AlterModelOptions(
+            name="category",
+            options={"verbose_name_plural": "Categories"},
         ),
         migrations.AlterModelOptions(
             name="product_description",
             options={"verbose_name_plural": "Product Description"},
         ),
         migrations.AlterModelOptions(
-            name="product_details", options={"verbose_name_plural": "Product Details"},
+            name="product_details",
+            options={"verbose_name_plural": "Product Details"},
         ),
         migrations.AlterModelOptions(
-            name="product_image", options={"verbose_name_plural": "Product Images"},
+            name="product_image",
+            options={"verbose_name_plural": "Product Images"},
         ),
         migrations.AlterModelOptions(
-            name="product_stock", options={"verbose_name_plural": "Product Stock"},
+            name="product_stock",
+            options={"verbose_name_plural": "Product Stock"},
         ),
         migrations.RenameField(
-            model_name="product", old_name="price", new_name="product_price",
+            model_name="product",
+            old_name="price",
+            new_name="product_price",
         ),
     ]

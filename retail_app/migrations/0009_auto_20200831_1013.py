@@ -12,17 +12,38 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name="productcolor", options={"verbose_name_plural": "Product Stock"},
+            name="productcolor",
+            options={"verbose_name_plural": "Product Stock"},
         ),
         migrations.RenameField(
-            model_name="productstock", old_name="colors", new_name="color_stock",
+            model_name="productstock",
+            old_name="colors",
+            new_name="color_stock",
         ),
-        migrations.RemoveField(model_name="product", name="image",),
-        migrations.RemoveField(model_name="product", name="stock",),
-        migrations.RemoveField(model_name="productimage", name="image",),
-        migrations.RemoveField(model_name="productimage", name="name",),
-        migrations.RemoveField(model_name="productstock", name="name",),
-        migrations.RemoveField(model_name="productstock", name="quantities",),
+        migrations.RemoveField(
+            model_name="product",
+            name="image",
+        ),
+        migrations.RemoveField(
+            model_name="product",
+            name="stock",
+        ),
+        migrations.RemoveField(
+            model_name="productimage",
+            name="image",
+        ),
+        migrations.RemoveField(
+            model_name="productimage",
+            name="name",
+        ),
+        migrations.RemoveField(
+            model_name="productstock",
+            name="name",
+        ),
+        migrations.RemoveField(
+            model_name="productstock",
+            name="quantities",
+        ),
         migrations.AddField(
             model_name="productimage",
             name="image_url",

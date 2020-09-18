@@ -11,20 +11,39 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameModel(
-            old_name="Business_Designer", new_name="BusinessDesigner",
+            old_name="Business_Designer",
+            new_name="BusinessDesigner",
         ),
-        migrations.RenameModel(old_name="Product_Color", new_name="ProductColor",),
         migrations.RenameModel(
-            old_name="Product_Description", new_name="ProductDescription",
+            old_name="Product_Color",
+            new_name="ProductColor",
         ),
-        migrations.RenameModel(old_name="Product_Details", new_name="ProductDetails",),
-        migrations.RenameModel(old_name="Product_Image", new_name="ProductImage",),
-        migrations.RenameModel(old_name="Product_Price", new_name="ProductPrice",),
         migrations.RenameModel(
-            old_name="Product_Quantity", new_name="ProductQuantity",
+            old_name="Product_Description",
+            new_name="ProductDescription",
         ),
-        migrations.RenameModel(old_name="Product_Stock", new_name="ProductStock",),
+        migrations.RenameModel(
+            old_name="Product_Details",
+            new_name="ProductDetails",
+        ),
+        migrations.RenameModel(
+            old_name="Product_Image",
+            new_name="ProductImage",
+        ),
+        migrations.RenameModel(
+            old_name="Product_Price",
+            new_name="ProductPrice",
+        ),
+        migrations.RenameModel(
+            old_name="Product_Quantity",
+            new_name="ProductQuantity",
+        ),
+        migrations.RenameModel(
+            old_name="Product_Stock",
+            new_name="ProductStock",
+        ),
         migrations.AlterModelOptions(
-            name="productprice", options={"verbose_name_plural": "Product Prices"},
+            name="productprice",
+            options={"verbose_name_plural": "Product Prices"},
         ),
     ]
