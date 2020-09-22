@@ -1,13 +1,11 @@
-from . import get_html
+from . import get_html, AbstractUrl, ProcessHTML
 import json
 import re
 import math
 
 
-def get_site_data():
-    html_data = get_html.get_html_data(
-        "https://www.chanel.com/us/fashion/handbags/c/1x1x1/"
-    )
+def get_site_data(url="https://www.chanel.com/us/fashion/handbags/c/1x1x1/"):
+    html_data = get_html.get_html_data(url)
 
     return html_data
 
@@ -17,15 +15,15 @@ def get_products(page=1):
         f"https://www.chanel.com/us/fashion/handbags/c/1x1x1/?requestType=ajax&page={page}&totalElementsCount=24"
     )
 
-    return products_data
+    data = json.loads(products_data)
+
+    return data
 
 
 def check_products_next_page(page=1):
     products_data = get_products(page)
 
-    data = json.loads(products_data)
-
-    return data["next"]
+    return products_data["next"]
 
 
 # Getting from the scraping of the website here, but could've gotten from the request- "totalResults".
@@ -51,3 +49,42 @@ def check_last_page():
     last_page_number = get_last_page_number()
 
     return check_products_next_page(last_page_number)
+
+
+def generate_pages():
+    for page in range(get_last_page_number() + 1):
+        yield page
+
+
+# TODO: organize behaviors into a class for pages, urls and url.
+def get_product_urls(pages):
+    # TODO: Process in chunks in case of failure?
+    urls = []
+
+    for page in range(1, pages + 1):
+        products_data = get_products(page)
+        products_ids = products_data.get("dataLayer", {}).get("productList", {}).keys()
+
+        for id in products_ids:
+            url_path = (
+                products_data.get("dataLayer", {})
+                .get("productList", {})
+                .get(id, {})
+                .get("quickviewPopin", {})
+                .get("page", {})
+            )
+
+            url = AbstractUrl(url_path)
+
+            url.url_path = url.make_chanel_complete_url(id)
+
+            urls.append(url)
+
+    return urls
+
+
+def get_product_html(url):
+    # TODO: need to handle 404 error, etc here?
+    html = get_site_data(url)
+
+    return ProcessHTML(html)
