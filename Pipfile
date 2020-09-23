@@ -18,6 +18,7 @@ pillow = "*"
 coverage = "*"
 pre-commit = "*"
 model-bakery = "*"
+vcrpy = "*"
 
 [requires]
 python_version = "3.7"
