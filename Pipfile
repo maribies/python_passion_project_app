@@ -17,6 +17,7 @@ gunicorn = "*"
 pillow = "*"
 coverage = "*"
 pre-commit = "*"
+model-bakery = "*"
 
 [requires]
 python_version = "3.7"

@@ -6,8 +6,6 @@ from .models import (
     Product,
     ProductImage,
     ProductStock,
-    ProductDescription,
-    ProductDetails,
     SearchProductKeywords,
 )
 
@@ -16,6 +14,4 @@ admin.site.register(Designer)
 admin.site.register(Product)
 admin.site.register(ProductImage)
 admin.site.register(ProductStock)
-admin.site.register(ProductDescription)
-admin.site.register(ProductDetails)
 admin.site.register(SearchProductKeywords)

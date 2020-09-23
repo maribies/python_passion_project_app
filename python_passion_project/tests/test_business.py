@@ -1,27 +1,16 @@
 from django.test import TestCase
-from retail_app.models import Business, BusinessDesigner, Category
+from retail_app.models import Business
+from model_bakery import baker
 
 
 class BusinessTest(TestCase):
-    """Business correctly returns name"""
+    """Business correctly returns attributes"""
 
     def setUp(self):
-        designer = BusinessDesigner.objects.create(
-            name="Test Designer",
-        )
-
-        category = Category.objects.create(
-            name="Test Designer",
-        )
-
-        Business.objects.create(
-            name="Test Product",
-            site_url="https://www.testsite.com",
-            designer=designer,
-            category=category,
-        )
+        self.business = baker.make_recipe("retail_app.business_test")
 
     def test_name(self):
-        business = Business.objects.get(name="Test Product")
+        self.assertEqual(self.business.name, "Test Business")
 
-        self.assertEqual(business.name, "Test Product")
+    def test_site_url(self):
+        self.assertEqual(self.business.site_url, "https://www.testsite.com")
