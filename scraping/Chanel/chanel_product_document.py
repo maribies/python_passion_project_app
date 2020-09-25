@@ -1,4 +1,8 @@
-class ProcessHTML:
+import re
+from .chanel_html import ChanelHtml
+
+
+class ChanelProductDocument:
     def __init__(self, html):
         self.html = html
 

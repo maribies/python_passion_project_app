@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from .exceptions import ServerError, NotFoundError
 
 
 class GetHTML:
@@ -7,12 +8,23 @@ class GetHTML:
         self.url = url
 
     @classmethod
-    def make_request(self, url):
-        # Get the HTML of the website
-        r = requests.get(url)
+    def get_response(self, url):
+        # Get the response.
+        response = requests.get(url)
 
+        # Check the response status and raise exception.
+        if response.status_code == 404:
+            raise NotFoundError()
+
+        if response.status_code == 500:
+            raise ServerError()
+
+        return response
+
+    @classmethod
+    def get_request_text(self, response):
         # Return the html to be parsed.
-        return r.text
+        return response.text
 
     @classmethod
     def parse_html(self, html_doc):
@@ -21,7 +33,9 @@ class GetHTML:
 
     @classmethod
     def get_html_data(self, url):
-        html_doc = self.make_request(url)
+        response = self.get_response(url)
+
+        html_doc = self.get_request_text(response)
 
         html_data = self.parse_html(html_doc)
 
