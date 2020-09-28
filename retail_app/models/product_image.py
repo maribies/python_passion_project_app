@@ -3,7 +3,7 @@ from django.db import models
 
 class ProductImage(models.Model):
     product = models.ForeignKey("Product", on_delete=models.CASCADE)
-    image_url = models.CharField(max_length=255, null=False)
+    image_url = models.TextField(null=False)
 
     class Meta:
         verbose_name_plural = "Product Images"
