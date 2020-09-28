@@ -2,10 +2,9 @@ from django.db import models
 
 
 class ProductPrice(models.Model):
-    currency = models.CharField(max_length=50)
+    currency = models.CharField(max_length=50, default="N/A")
     amount = models.DecimalField(
-        max_digits=19,
-        decimal_places=2,
+        max_digits=19, decimal_places=2, null=True, blank=True, default=None
     )
 
     class Meta:
