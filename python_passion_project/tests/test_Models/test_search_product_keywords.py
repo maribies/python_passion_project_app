@@ -18,7 +18,7 @@ class SearchProductKeywordsTest(TestCase):
         self.assertEqual(self.search.product.name, "Test Product")
 
     def test_keywords_create(self):
-        product = self.search = baker.make_recipe("retail_app.product_test")
+        product = baker.make_recipe("retail_app.product_test")
 
         product_data = {
             "product_details": {"sku": "123testsku12"},
@@ -33,7 +33,9 @@ class SearchProductKeywordsTest(TestCase):
         }
 
         SearchProductKeywords.create_keywords(product_data, product)
-        search = SearchProductKeywords.objects.get(product=2)
+        search = SearchProductKeywords.objects.get(
+            keywords="123testsku12 test data name ss20 test collection test brand test designer purple black gunmetal"
+        )
 
         self.assertEqual(
             search.keywords,
