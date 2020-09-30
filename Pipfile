@@ -19,6 +19,7 @@ coverage = "*"
 pre-commit = "*"
 model-bakery = "*"
 vcrpy = "*"
+django-debug-toolbar = "*"
 
 [requires]
 python_version = "3.7"
