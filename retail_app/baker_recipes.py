@@ -15,9 +15,15 @@ from retail_app.models import (
 )
 from decimal import Decimal
 
-business_designer_test = Recipe(BusinessDesigner, name="Test Designer",)
+business_designer_test = Recipe(
+    BusinessDesigner,
+    name="Test Designer",
+)
 
-category_test = Recipe(Category, name="Test Category",)
+category_test = Recipe(
+    Category,
+    name="Test Category",
+)
 
 business_test = Recipe(
     Business,

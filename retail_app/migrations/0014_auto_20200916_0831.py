@@ -6,61 +6,61 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('retail_app', '0013_searchproductkeywords'),
+        ("retail_app", "0013_searchproductkeywords"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='product',
-            name='product_description',
+            model_name="product",
+            name="product_description",
         ),
         migrations.RemoveField(
-            model_name='product',
-            name='product_details',
+            model_name="product",
+            name="product_details",
         ),
         migrations.AddField(
-            model_name='product',
-            name='brand',
+            model_name="product",
+            name="brand",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
         migrations.AddField(
-            model_name='product',
-            name='category',
-            field=models.CharField(default='Handbags', max_length=50),
+            model_name="product",
+            name="category",
+            field=models.CharField(default="Handbags", max_length=50),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='product',
-            name='collection',
+            model_name="product",
+            name="collection",
             field=models.CharField(blank=True, max_length=50, null=True),
         ),
         migrations.AddField(
-            model_name='product',
-            name='dimensions',
-            field=models.CharField(default='10x10', max_length=200),
+            model_name="product",
+            name="dimensions",
+            field=models.CharField(default="10x10", max_length=200),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='product',
-            name='material',
-            field=models.TextField(default='cotton'),
+            model_name="product",
+            name="material",
+            field=models.TextField(default="cotton"),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='product',
-            name='season',
+            model_name="product",
+            name="season",
             field=models.CharField(blank=True, max_length=50, null=True),
         ),
         migrations.AddField(
-            model_name='product',
-            name='size',
-            field=models.CharField(default='os', max_length=50),
+            model_name="product",
+            name="size",
+            field=models.CharField(default="os", max_length=50),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='product',
-            name='sku',
-            field=models.CharField(default='TESTSKU89012', max_length=50),
+            model_name="product",
+            name="sku",
+            field=models.CharField(default="TESTSKU89012", max_length=50),
             preserve_default=False,
         ),
     ]
