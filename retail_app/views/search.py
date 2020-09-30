@@ -14,6 +14,10 @@ def search(request):
     """Show search results for all products and designers."""
     try:
         query = request.GET.get("search")
+
+        if query is None:
+            raise Exception("Query can't be None.")
+
         keywords = (
             SearchProductKeywords.objects.filter(keywords__icontains=query)
             .select_related("product")
@@ -36,5 +40,9 @@ def search(request):
 
     except IndexError or AttributeError or ValueError:
         raise Http404("Something went wrong!")
+
+    except Exception:
+        # TODO: Add model manager for context so it's not an empty page.
+        return render(request, "retail_app/index.html")
 
     return render(request, "retail_app/search_content.html", context)
