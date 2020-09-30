@@ -9,20 +9,18 @@ def index(request):
 
     """Show all products, businesses, and designers."""
     try:
-        products = Product.objects.order_by("designer")
-        businesses = Business.objects.order_by("name")
-        designers = Designer.objects.order_by("name")
-        business_name = businesses[0].name
+        products = (
+            Product.objects.order_by("designer")
+            .select_related("product_price")
+            .prefetch_related("productimage_set")
+            .prefetch_related("productstock_set__color")
+        )
 
-        for product in products:
-            product.images = product.productimage_set.all()[0:2]
-            product.stock = product.productstock_set.all()
+        designers = Designer.objects.order_by("name")
 
         context = {
             "products": products,
-            "businesses": businesses,
             "designers": designers,
-            "name": business_name,
         }
 
     except IndexError or AttributeError:
