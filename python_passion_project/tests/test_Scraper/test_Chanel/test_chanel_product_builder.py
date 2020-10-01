@@ -11,6 +11,7 @@ from retail_app.models import (
     ProductColor,
     ProductImage,
     ProductStock,
+    SearchProductKeywords,
 )
 
 
@@ -41,11 +42,14 @@ class TestChanelProductBuilder(TestCase):
     def test_create_price(self):
         price = self.builder.create_product_price()
 
-        assert price is not None
-        # self.assertIsInstance(price, ProductPrice)
+        self.assertNotEqual(price, None)
+        self.assertIsInstance(price[0], ProductPrice)
+        self.assertEqual(type(price[0].amount), float)
+        self.assertEqual(type(price[0].currency), str)
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        # self.assertEqual(price.amount, 6_500)
-        # self.assertEqual(price.currency, "$")
+        self.assertEqual(price[0].__str__(), "$6500.0")
+        self.assertEqual(price[0].amount, 6500.0)
+        self.assertEqual(price[0].currency, "$")
 
     # Given a product document, a Product class is successfully created.
     def test_create_product_from_document(self):
@@ -53,16 +57,19 @@ class TestChanelProductBuilder(TestCase):
         product = self.builder.create_product()
 
         self.assertNotEqual(product, None)
-        # self.assertIsInstance(product, Product)
+        self.assertIsInstance(product[0], Product)
+        self.assertEqual(type(product[0].name), str)
+        self.assertNotEqual(type(product[0].name), "")
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        # self.assertEqual(product.name, "Classic Handbag Lambskin & Gold-Tone Metal")
+        self.assertEqual(product[0].name, "Classic Handbag Lambskin & Gold-Tone Metal")
 
     # Given a color, a Color class is successfully created.
     def test_create_color(self):
         color = self.builder.create_product_color()
 
         self.assertNotEqual(color, None)
-        # self.assertIsInstance(color, ProductColor)
+        self.assertIsInstance(color[0], ProductColor)
+        self.assertEqual(type(color[0].color), str)
 
     def test_product_stock(self):
         self.builder.create_product_color()
@@ -71,7 +78,15 @@ class TestChanelProductBuilder(TestCase):
         stock = self.builder.create_product_stock()
 
         self.assertNotEqual(stock, None)
-        # self.assertEqual(stock.__str__(), 'Classic Handbag Lambskin & Gold-Tone Metal - Black - None')
+        self.assertIsInstance(stock[0], ProductStock)
+        self.assertNotEqual(stock[0].product, None)
+        self.assertTrue(stock[0].quantity is None or type(stock[0].quantity) == int)
+        self.assertNotEqual(stock[0].color, None)
+        # TODO: This is obviously very specific based on the static url given above, and both should be generic.
+        self.assertEqual(
+            stock[0].__str__(),
+            "Classic Handbag Lambskin & Gold-Tone Metal - Black - None",
+        )
 
     def test_product_image(self):
         self.builder.create_product_price()
@@ -79,33 +94,27 @@ class TestChanelProductBuilder(TestCase):
         image = self.builder.create_product_image()
 
         self.assertNotEqual(image, None)
-        # self.assertIsInstance(image, ProductImage)
+        self.assertIsInstance(image[0], ProductImage)
+        self.assertEqual(type(image[0].image_url), str)
+        self.assertNotEqual(image[0].product, None)
+        # TODO: This is obviously very specific based on the static url given above, and both should be generic.
+        self.assertEqual(
+            image[0].image_url,
+            "https://www.chanel.com/images/t_fashionzoom1/f_jpg/classic-handbag-black-lambskin-gold-tone-metal-lambskin-gold-tone-metal-packshot-default-a01112y0129594305-8818021072926.jpg",
+        )
 
     def test_search_product_keywords(self):
         self.builder.create_product_price()
         self.builder.create_product()
         keywords = self.builder.create_keywords()
 
+        print(keywords, type(keywords))
         self.assertNotEqual(keywords, None)
-        # TODO: why does this pass, shouldn't it be a class instance?
-        self.assertTrue(type(keywords), "")
+        self.assertIsInstance(keywords[0], SearchProductKeywords)
+        self.assertEqual(type(keywords[0].keywords), str)
+        self.assertIn(keywords[0].product.name, keywords[0].keywords)
 
     def test_sku(self):
         sku = self.builder.sku()
 
         self.assertTrue(len(sku) <= 55)
-
-
-# TODO: Given a url, a Product class is successfully created.
-#     def test_create_product_from_url(self, url):
-#         product = self.chanel.create_product(url)
-
-# TODO: Given multiple urls, multiple products are created.
-#     def test_create_products_from_url(self):
-#         urls = self.products.urls
-#         products = []
-
-#         for url in urls:
-#             product = self.chanel.create_product(url)
-
-#         products.append(product)
