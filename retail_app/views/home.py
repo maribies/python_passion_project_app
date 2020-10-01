@@ -9,12 +9,7 @@ def index(request):
 
     """Show all products, businesses, and designers."""
     try:
-        products = (
-            Product.objects.order_by("designer")
-            .select_related("product_price")
-            .prefetch_related("productimage_set")
-            .prefetch_related("productstock_set__color")
-        )
+        products = Product.products_fully_loaded.all()
 
         designers = Designer.objects.order_by("name")
 
