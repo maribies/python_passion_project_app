@@ -35,5 +35,6 @@ class Command(BaseCommand):
                 self.style.SUCCESS("Successfully created the Chanel products.")
             )
 
-        except Exception:
-            self.stdout.write(self.style.ERROR("Oppps. No products info."))
+        except Exception as e:
+            self.stdout.write(self.style.ERROR("Opps"))
+            self.stdout.write(self.style.ERROR(e))

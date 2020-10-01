@@ -11,25 +11,28 @@ from retail_app.models import (
 def search(request):
     """The search page for the retail app, Find and Seek"""
 
-    """Show search results for all products, businesses, and designers."""
+    """Show search results for all products and designers."""
     try:
-        query = request.GET.get("userSearchInput")
+        query = request.GET.get("search")
+
+        if query is None:
+            raise Exception("Query can't be None.")
+
         keywords = (
-            SearchProductKeywords.objects.filter(keywords__contains=query)
+            SearchProductKeywords.objects.filter(keywords__icontains=query)
             .select_related("product")
-            .prefetch_related("product__productimage_set", "product__productstock_set")
+            .select_related("product__product_price")
+            .prefetch_related(
+                "product__productimage_set",
+                "product__productstock_set",
+                "product__productstock_set__color",
+            )
         )
         products = [keyword.product for keyword in keywords]
-        businesses = Business.objects.order_by("name")
         designers = Designer.objects.order_by("name")
-
-        for product in products:
-            product.images = product.productimage_set.all()[0:2]
-            product.stock = product.productstock_set.all()
 
         context = {
             "products": products,
-            "businesses": businesses,
             "designers": designers,
             "results": len(keywords),
             "query": query,
@@ -37,5 +40,9 @@ def search(request):
 
     except IndexError or AttributeError or ValueError:
         raise Http404("Something went wrong!")
+
+    except Exception:
+        # TODO: Add model manager for context so it's not an empty page.
+        return render(request, "retail_app/index.html")
 
     return render(request, "retail_app/search_content.html", context)

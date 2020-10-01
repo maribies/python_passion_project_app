@@ -7,6 +7,7 @@ from retail_app.models import (
     ProductColor,
     ProductStock,
     ProductImage,
+    SearchProductKeywords,
 )
 
 
@@ -31,6 +32,9 @@ class ChanelProductBuilder:
 
         return info[1]
 
+    def sku(self):
+        return self.product.get("id")
+
     def create_product_price(self):
         return ProductPrice.objects.update_or_create(
             currency=self.document.product_currency(),
@@ -51,7 +55,7 @@ class ChanelProductBuilder:
             material=self.document.product_material(),
             size="OS",
             dimensions=self.document.product_dimensions(),
-            sku=self.product.get("id"),
+            sku=self.sku(),
             season=self.season(),
             collection=self.collection(),
             category="Bags",
@@ -84,6 +88,33 @@ class ChanelProductBuilder:
                     product=product, image_url=image
                 )
 
+    def keywords(self):
+        return (
+            self.document.product_name()
+            + " "
+            + self.document.product_color()
+            + " "
+            + self.document.product_material()
+            + " "
+            + self.collection()
+            + " "
+            + self.season()
+            + " "
+            + self.sku()
+            + " "
+            + "Chanel"
+        )
+
+    def create_keywords(self):
+        products = Product.objects.filter(name=self.document.product_name())
+
+        for product in products:
+            keywords = self.keywords()
+
+            return SearchProductKeywords.objects.update_or_create(
+                product=product, keywords=keywords
+            )
+
     def create_all_product_information(self):
         print("Creating product fields... This will take a minute or so.")
 
@@ -92,3 +123,4 @@ class ChanelProductBuilder:
         self.create_product_color()
         self.create_product_stock()
         self.create_product_image()
+        self.create_keywords()
