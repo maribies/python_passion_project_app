@@ -108,7 +108,6 @@ class TestChanelProductBuilder(TestCase):
         self.builder.create_product()
         keywords = self.builder.create_keywords()
 
-        print(keywords, type(keywords))
         self.assertNotEqual(keywords, None)
         self.assertIsInstance(keywords[0], SearchProductKeywords)
         self.assertEqual(type(keywords[0].keywords), str)

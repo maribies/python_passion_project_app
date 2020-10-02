@@ -17,7 +17,7 @@ class Product(models.Model):
     collection = models.CharField(max_length=50, null=True, blank=True)
     category = models.CharField(max_length=50)
     brand = models.CharField(max_length=100, null=True, blank=True)
-    products_fully_loaded = ProductsManager()
+    objects = ProductsManager()
 
     def __str__(self):
         return self.name
