@@ -84,8 +84,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "pythonpassionprojectdb",
-        "USER": "myprojectuser",
-        "PASSWORD": "password",
+        "USER": "admin",
+        "PASSWORD": "bad_password",
         "HOST": "localhost",
         "PORT": "",
     }

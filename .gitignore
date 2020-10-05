@@ -1,2 +1,4 @@
 _pychace_/
 *.sqlite3
+*.pyc
+/staticfiles
