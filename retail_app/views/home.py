@@ -9,7 +9,7 @@ def index(request):
 
     """Show all products and designers."""
     try:
-        products = Product.products_fully_loaded()
+        products = Product.objects.fully_loaded_objects()
 
         designers = Designer.objects.order_by("name")
 
