@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from django.http import Http404
 
-from retail_app.models import Business, Designer, Product
+from retail_app.models import Designer, Product
 
 
 def index(request):
     """The home page for the retail app, Find and Seek"""
 
-    """Show all products, businesses, and designers."""
+    """Show all products and designers."""
     try:
-        products = Product.products_fully_loaded.all()
+        products = Product.objects.fully_loaded_objects.all()
 
         designers = Designer.objects.order_by("name")
 

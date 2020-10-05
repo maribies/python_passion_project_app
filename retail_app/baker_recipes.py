@@ -1,8 +1,5 @@
 from model_bakery.recipe import Recipe, foreign_key
 from retail_app.models import (
-    BusinessDesigner,
-    Business,
-    Category,
     Collection,
     Designer,
     ProductPrice,
@@ -14,24 +11,6 @@ from retail_app.models import (
     Season,
 )
 from decimal import Decimal
-
-business_designer_test = Recipe(
-    BusinessDesigner,
-    name="Test Designer",
-)
-
-category_test = Recipe(
-    Category,
-    name="Test Category",
-)
-
-business_test = Recipe(
-    Business,
-    name="Test Business",
-    site_url="https://www.testsite.com",
-    designer=foreign_key(business_designer_test),
-    category=foreign_key(category_test),
-)
 
 collection_test = Recipe(Collection, name="Test Collection")
 
