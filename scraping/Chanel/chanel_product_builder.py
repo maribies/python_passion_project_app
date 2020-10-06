@@ -82,15 +82,21 @@ class ChanelProductBuilder:
             quantity=None,
         )
 
-    def create_product_image(self):
+    def create_product_images(self):
         images = self.document.product_images()
 
         product = Product.objects.get(site_url=self.product.get("url"))
 
-        for image in images:
-            return ProductImage.objects.update_or_create(
-                product=product, image_url=image
+        created_images = []
+
+        for path in images:
+            image = ProductImage.objects.update_or_create(
+                product=product, image_url=path
             )
+
+            created_images.append(image)
+
+        return created_images
 
     def keywords(self):
         return (
@@ -125,5 +131,5 @@ class ChanelProductBuilder:
         self.create_product()
         self.create_product_color()
         self.create_product_stock()
-        self.create_product_image()
+        self.create_product_images()
         self.create_keywords()

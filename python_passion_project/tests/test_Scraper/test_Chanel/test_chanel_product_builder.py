@@ -88,18 +88,18 @@ class TestChanelProductBuilder(TestCase):
             "Classic Handbag Lambskin & Gold-Tone Metal - Black - None",
         )
 
-    def test_product_image(self):
+    def test_product_images(self):
         self.builder.create_product_price()
         self.builder.create_product()
-        image = self.builder.create_product_image()
+        images = self.builder.create_product_images()
 
-        self.assertNotEqual(image, None)
-        self.assertIsInstance(image[0], ProductImage)
-        self.assertEqual(type(image[0].image_url), str)
-        self.assertNotEqual(image[0].product, None)
+        self.assertNotEqual(images[0], None)
+        self.assertIsInstance(images[0][0], ProductImage)
+        self.assertEqual(type(images[0][0].image_url), str)
+        self.assertNotEqual(images[0][0].product, None)
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
         self.assertEqual(
-            image[0].image_url,
+            images[0][0].image_url,
             "https://www.chanel.com/images/t_fashionzoom1/f_jpg/classic-handbag-black-lambskin-gold-tone-metal-lambskin-gold-tone-metal-packshot-default-a01112y0129594305-8818021072926.jpg",
         )
 
