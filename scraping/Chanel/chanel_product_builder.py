@@ -44,6 +44,10 @@ class ChanelProductBuilder:
         )
 
     # TODO: create methods for sku and url to check/verify/handle failures.
+    # Chanel is a little different in that urls are different for color vairants,
+    # unlike Bao Bao and original model.
+    # Will need to allow for multiple skus, urls under name, and then use
+    # a combo of name, price, and dimensions to make sure stock/colors and images are properly grouped.
     def create_product(self):
         return Product.objects.update_or_create(
             name=self.document.product_name(),
@@ -70,25 +74,23 @@ class ChanelProductBuilder:
         )
 
     def create_product_stock(self):
-        products = Product.objects.filter(name=self.document.product_name())
+        product = Product.objects.get(site_url=self.product.get("url"))
 
-        for product in products:
-            return ProductStock.objects.update_or_create(
-                color=ProductColor.objects.get(color=self.document.product_color()),
-                product=product,
-                quantity=None,
-            )
+        return ProductStock.objects.update_or_create(
+            color=ProductColor.objects.get(color=self.document.product_color()),
+            product=product,
+            quantity=None,
+        )
 
     def create_product_image(self):
         images = self.document.product_images()
 
-        products = Product.objects.filter(name=self.document.product_name())
+        product = Product.objects.get(site_url=self.product.get("url"))
 
         for image in images:
-            for product in products:
-                return ProductImage.objects.update_or_create(
-                    product=product, image_url=image
-                )
+            return ProductImage.objects.update_or_create(
+                product=product, image_url=image
+            )
 
     def keywords(self):
         return (
@@ -108,14 +110,13 @@ class ChanelProductBuilder:
         )
 
     def create_keywords(self):
-        products = Product.objects.filter(name=self.document.product_name())
+        product = Product.objects.get(site_url=self.product.get("url"))
 
-        for product in products:
-            keywords = self.keywords()
+        keywords = self.keywords()
 
-            return SearchProductKeywords.objects.update_or_create(
-                product=product, keywords=keywords
-            )
+        return SearchProductKeywords.objects.update_or_create(
+            product=product, keywords=keywords
+        )
 
     def create_all_product_information(self):
         print("Creating product fields... This will take a minute or so.")

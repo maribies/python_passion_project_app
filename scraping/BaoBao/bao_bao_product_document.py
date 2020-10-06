@@ -34,44 +34,102 @@ class BaoBaoProductDocument:
 
     def product_material(self):
         description = self.html.select_one(".product-single__description")
-
-        if len(description.select("p")) == 6:
-            return description.select_one("p:nth-of-type(5)").get_text(strip=True)
+        material = "Unavailable"
 
         try:
-            material = (
-                description.select_one("p:nth-of-type(4)")
-                .get_text(strip=True)
-                .lstrip("Material:")
-            )
+            index_of_material = description.get_text(strip=True).find("Material:")
+
+            if index_of_material > 1:
+                material = description.get_text(strip=True)[index_of_material:]
+
+            if material is None or material == "Unavailable":
+                try:
+                    paragraph = description.select_one("p:nth-of-type(1)")
+
+                except AttributeError:
+                    paragraph = description.select_one("p:nth-of-type(2)")
+
+                index_of_material = paragraph.get_text(strip=True).find("Material:")
+
+                if index_of_material > 1:
+                    material = paragraph.get_text(strip=True)[index_of_material:]
+
+                else:
+                    try:
+                        paragraph = description.select_one("p:nth-of-type(3)")
+
+                    except AttributeError:
+                        paragraph = description.select_one("p:nth-of-type(4)")
+
+                    material = paragraph.get_text(strip=True)
 
         except AttributeError:
-            material = (
-                description.select_one("p:nth-of-type(3)")
-                .get_text(strip=True)
-                .lstrip("Material:")
-            )
+            material = "N/A"
 
-        return material
+        index_of_care = material.find("Care:")
+
+        if index_of_care > 1:
+            material = material[:index_of_care]
+
+        index_of_dimensions = material.find("Dimensions:")
+
+        if index_of_dimensions > 1:
+            material = material[:index_of_dimensions]
+
+        return material.lstrip("Material:")
 
     def product_sku(self):
         description = self.html.select_one(".product-single__description")
+        product_code = "Unavailable"
 
-        index_of_code = (
-            description.select_one("p:nth-of-type(2)")
-            .get_text(strip=True)
-            .find("Product Code:")
-        )
+        try:
+            index_of_code = description.get_text(strip=True).find("Product Code:")
 
-        if index_of_code == -1:
-            product_code = description.select_one("p:nth-of-type(3)").get_text(
-                strip=True
-            )
+            if index_of_code > 1:
+                product_code = description.get_text(strip=True)[
+                    index_of_code : (index_of_code + 24)
+                ]
 
-        else:
-            product_code = description.select_one("p:nth-of-type(2)").get_text(
-                strip=True
-            )[index_of_code:]
+            if product_code is None or product_code == "Unavailable":
+                try:
+                    paragraph = description.select_one("p:nth-of-type(2)")
+
+                except AttributeError:
+                    try:
+                        paragraph = description.select_one("p:nth-of-type(3)")
+                    except AttributeError:
+                        paragraph = description.select_one("p:nth-of-type(4)")
+
+                index_of_code = paragraph.get_text(strip=True).find("Product Code:")
+
+                if index_of_code > 1:
+                    product_code = paragraph.get_text(strip=True)[
+                        index_of_code : (index_of_code + 24)
+                    ]
+
+        except AttributeError:
+            product_code = "N/A"
+
+        index_of_material = product_code.find("Material:")
+
+        if index_of_material > 1:
+            product_code = product_code[:index_of_material]
+
+        index_of_care = product_code.find("Care:")
+
+        if index_of_care > 1:
+            product_code = product_code[:index_of_care]
+
+        index_of_dimensions = product_code.find("Dimensions:")
+
+        if index_of_dimensions > 1:
+            product_code = product_code[:index_of_dimensions]
+
+        # If the product doesn't have an '-', then the M from material is returned
+        # in the 24 length from the trimming of the code above.
+        # Being "shamlessly green" now, can be improved later.
+        if product_code[-1] == "M":
+            product_code = product_code[:-1]
 
         return product_code.lstrip("Product Code:")
 
@@ -105,17 +163,32 @@ class BaoBaoProductDocument:
 
     def product_dimensions(self):
         description = self.html.select_one(".product-single__description")
+        dimensions = "Unavailable"
 
-        if len(description.select("p")) == 5:
-            return "N/A"
+        try:
+            index_of_dimensions = description.get_text(strip=True).find("Dimensions:")
 
-        else:
-            try:
-                dimensions = description.select_one("p:nth-of-type(4)").get_text(
-                    strip=True
-                )
+            if index_of_dimensions > 1:
+                dimensions = description.get_text(strip=True)[index_of_dimensions:]
 
-                return dimensions.lstrip("Dimensions:")
+            if dimensions is None or dimensions == "Unavailable":
+                try:
+                    paragraph = description.select_one("p:nth-of-type(3)")
 
-            except AttributeError:
-                return "N/A"
+                except AttributeError:
+                    paragraph = description.select_one("p:nth-of-type(4)")
+
+                index_of_dimensions = paragraph.get_text(strip=True).find("Dimensions:")
+
+                if index_of_dimensions > 1:
+                    dimensions = paragraph.get_text(strip=True)[index_of_dimensions:]
+
+        except AttributeError:
+            dimensions = "N/A"
+
+        index_of_material = dimensions.find("Material:")
+
+        if index_of_material > 1:
+            dimensions = dimensions[:index_of_material]
+
+        return dimensions.lstrip("Dimensions:")

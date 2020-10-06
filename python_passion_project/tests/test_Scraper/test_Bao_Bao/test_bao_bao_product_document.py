@@ -83,11 +83,11 @@ class TestBaoBaoProductDocuments(TestCase):
     def test_product_dimensions_none(self):
         dimensions = BaoBaoProductDocument.product_dimensions(self.html)
 
-        assert dimensions != ""
-        assert dimensions is not None
+        self.assertNotEqual(dimensions, None)
         self.assertIsInstance(dimensions, str)
+        self.assertNotEqual(dimensions, "")
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(dimensions, "N/A")
+        self.assertEqual(dimensions, "Unavailable")
 
     def test_product_dimensions(self):
         html = BaoBaoHtml.get_html_data(
@@ -96,8 +96,8 @@ class TestBaoBaoProductDocuments(TestCase):
 
         dimensions = BaoBaoProductDocument.product_dimensions(html)
 
-        assert dimensions != ""
-        assert dimensions is not None
+        self.assertNotEqual(dimensions, None)
         self.assertIsInstance(dimensions, str)
+        self.assertNotEqual(dimensions, "")
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
         self.assertEqual(dimensions, "9.3 in x 9.3 in x 3.1 in")

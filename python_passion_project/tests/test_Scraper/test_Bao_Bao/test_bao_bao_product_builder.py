@@ -52,11 +52,11 @@ class TestBaoBaoProductBuilder(TestCase):
 
     # Given a color, a Color class is successfully created.
     def test_create_colors(self):
-        color = self.builder.create_product_colors()
+        colors = self.builder.create_product_colors()
 
-        self.assertNotEqual(color, None)
-        self.assertIsInstance(color[0], ProductColor)
-        self.assertEqual(type(color[0].color), str)
+        self.assertNotEqual(colors, None)
+        self.assertIsInstance(colors[0][0], ProductColor)
+        self.assertEqual(type(colors[0][0].color), str)
 
     def test_product_stock(self):
         self.builder.create_product_colors()
@@ -65,28 +65,28 @@ class TestBaoBaoProductBuilder(TestCase):
         stock = self.builder.create_product_stock()
 
         self.assertNotEqual(stock, None)
-        self.assertIsInstance(stock[0], ProductStock)
-        self.assertNotEqual(stock[0].product, None)
-        self.assertTrue(stock[0].quantity is None or type(stock[0].quantity) == int)
-        self.assertNotEqual(stock[0].color, None)
+        self.assertIsInstance(stock[0][0], ProductStock)
+        self.assertNotEqual(stock[0][0].product, None)
+        self.assertTrue(stock[0][0].quantity is None or type(stock[0].quantity) == int)
+        self.assertNotEqual(stock[0][0].color, None)
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
         self.assertEqual(
-            stock[0].__str__(),
+            stock[0][0].__str__(),
             "LUCENT MATTE CROSSBODY BAG - Light Gray - None",
         )
 
-    def test_product_image(self):
+    def test_product_images(self):
         self.builder.create_product_price()
         self.builder.create_product()
-        image = self.builder.create_product_image()
+        images = self.builder.create_product_images()
 
-        self.assertNotEqual(image, None)
-        self.assertIsInstance(image[0], ProductImage)
-        self.assertEqual(type(image[0].image_url), str)
-        self.assertNotEqual(image[0].product, None)
+        self.assertNotEqual(images, None)
+        self.assertIsInstance(images[0][0], ProductImage)
+        self.assertEqual(type(images[0][0].image_url), str)
+        self.assertNotEqual(images[0][0].product, None)
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
         self.assertEqual(
-            image[0].image_url,
+            images[0][0].image_url,
             "//cdn.shopify.com/s/files/1/0274/9988/8734/products/BB08AG685-11-01_1800x1800.jpg?v=1599862324",
         )
 

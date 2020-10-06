@@ -54,30 +54,42 @@ class BaoBaoProductBuilder:
 
     def create_product_colors(self):
         colors = self.document.product_colors()
+        created_colors = []
 
-        for color in colors:
-            return self.create_product_color(color)
+        for color_text in colors:
+            color = self.create_product_color(color_text)
+            created_colors.append(color)
+
+        return created_colors
 
     # TODO: Try to figure out if stock numbers can be retrevied from script in html.
     def create_product_stock(self):
         colors = self.document.product_colors()
 
-        for color in colors:
-            return ProductStock.objects.update_or_create(
-                color=ProductColor.objects.get(color=color),
-                product=Product.objects.get(name=self.document.product_name()),
+        created_colors = []
+
+        for color_text in colors:
+            color = ProductStock.objects.update_or_create(
+                color=ProductColor.objects.get(color=color_text),
+                product=Product.objects.get(site_url=self.product.get("url")),
                 quantity=None,
             )
+            created_colors.append(color)
+        return created_colors
 
-    def create_product_image(self):
+    def create_product_images(self):
         images = self.document.product_images()
 
-        product = Product.objects.get(name=self.document.product_name())
+        product = Product.objects.get(site_url=self.product.get("url"))
 
-        for image in images:
-            return ProductImage.objects.update_or_create(
-                product=product, image_url=image
+        created_images = []
+
+        for path in images:
+            image = ProductImage.objects.update_or_create(
+                product=product, image_url=path
             )
+            created_images.append(image)
+        return created_images
 
     def keywords(self):
         keywords = (
@@ -99,7 +111,7 @@ class BaoBaoProductBuilder:
         return keywords
 
     def create_keywords(self):
-        product = Product.objects.get(name=self.document.product_name())
+        product = Product.objects.get(site_url=self.product.get("url"))
 
         keywords = self.keywords()
 
@@ -114,5 +126,5 @@ class BaoBaoProductBuilder:
         self.create_product()
         self.create_product_colors()
         self.create_product_stock()
-        self.create_product_image()
+        self.create_product_images()
         self.create_keywords()
