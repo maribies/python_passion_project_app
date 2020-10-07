@@ -9,7 +9,7 @@
   <div class="productsContainer">
     {% for product in products %}
     <div class="productContainer">
-      <a class="product" href="{{ product.site_url }}">
+      <a class="link" href="{{ product.site_url }}">
         {% for image in product.productimage_set.all|slice:"0:1" %}
           <img class="productImage show" src="{{ image.image_url }}" alt="{{ image.product.name }}">
         {% endfor %}
