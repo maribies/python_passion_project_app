@@ -13,6 +13,7 @@ class BaoBao:
 
         # Get html per product.
         for url in products_urls:
+            print(url)
             html = BaoBaoHtml(url)
 
             document = BaoBaoProductDocument(html.get_html_data(url))

@@ -6,7 +6,7 @@ from scraping import (
 
 
 class Command(BaseCommand):
-    help = "Scrape for Chanel products"
+    help = "Scrape for Bao Bao products"
 
     def handle(self, *args, **options):
         try:

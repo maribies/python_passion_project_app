@@ -1,9 +1,5 @@
 from django.test import TestCase
-from scraping import BaoBao, exceptions
-
-
-def not_found():
-    raise exceptions.NotFoundError()
+from scraping import BaoBao
 
 
 class TestGetBaoBaoProducts(TestCase):
@@ -16,6 +12,7 @@ class TestGetBaoBaoProducts(TestCase):
             "https://us-store.isseymiyake.com/collections/baobao/products/prism-frost-crossbody-bag",
             "https://us-store.isseymiyake.com/collections/baobao/products/prism-frost-pouch",
             "https://us-store.isseymiyake.com/collections/baobao/products/drape-tote-bag",
+            "https://us-store.isseymiyake.com/collections/baobao/products/wring-nubuck-crossbody-bag",
         ]
 
     # Given [urls], creates products.
@@ -29,7 +26,7 @@ class TestGetBaoBaoProducts(TestCase):
         products = BaoBao.create_products(self, self.products_urls)
 
         self.assertNotEqual(products, None)
-        self.assertEqual(products, 4)
+        self.assertEqual(products, len(self.products_urls))
 
     # TODO: See if it's possible to refactor/test to continue to create products
     # and just skip over bad urls... but not sure with exception being nested all the way

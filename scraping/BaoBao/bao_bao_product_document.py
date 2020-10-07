@@ -11,127 +11,29 @@ class BaoBaoProductDocument:
 
         return product_title[0].get_text(strip=True)
 
-    def product_price(self):
+    def _product_price(self):
         product_price = self.html.select(".product__price")
 
-        return product_price[0].get_text(strip=True)
+        text = product_price[0].get_text(strip=True)
+
+        if text == "":
+            text = product_price[1].get_text(strip=True)
+
+        return text
 
     def product_amount(self):
-        price = self.html.select(".product__price")
-
-        text = price[0].get_text(strip=True)
+        text = self._product_price()
 
         amount = "".join(re.findall(r"[\d]", text))
 
         return float(amount)
 
     def product_currency(self):
-        price = self.html.select(".product__price")
+        text = self._product_price()
 
-        text = price[0].get_text(strip=True)
+        currency = re.findall("[^0-9*,. ]", text)[0]
 
-        return re.findall("[^0-9*,. ]", text)[0]
-
-    def product_material(self):
-        description = self.html.select_one(".product-single__description")
-        material = "Unavailable"
-
-        try:
-            index_of_material = description.get_text(strip=True).find("Material:")
-
-            if index_of_material > 1:
-                material = description.get_text(strip=True)[index_of_material:]
-
-            if material is None or material == "Unavailable":
-                try:
-                    paragraph = description.select_one("p:nth-of-type(1)")
-
-                except AttributeError:
-                    paragraph = description.select_one("p:nth-of-type(2)")
-
-                index_of_material = paragraph.get_text(strip=True).find("Material:")
-
-                if index_of_material > 1:
-                    material = paragraph.get_text(strip=True)[index_of_material:]
-
-                else:
-                    try:
-                        paragraph = description.select_one("p:nth-of-type(3)")
-
-                    except AttributeError:
-                        paragraph = description.select_one("p:nth-of-type(4)")
-
-                    material = paragraph.get_text(strip=True)
-
-        except AttributeError:
-            material = "N/A"
-
-        index_of_care = material.find("Care:")
-
-        if index_of_care > 1:
-            material = material[:index_of_care]
-
-        index_of_dimensions = material.find("Dimensions:")
-
-        if index_of_dimensions > 1:
-            material = material[:index_of_dimensions]
-
-        return material.lstrip("Material:")
-
-    def product_sku(self):
-        description = self.html.select_one(".product-single__description")
-        product_code = "Unavailable"
-
-        try:
-            index_of_code = description.get_text(strip=True).find("Product Code:")
-
-            if index_of_code > 1:
-                product_code = description.get_text(strip=True)[
-                    index_of_code : (index_of_code + 24)
-                ]
-
-            if product_code is None or product_code == "Unavailable":
-                try:
-                    paragraph = description.select_one("p:nth-of-type(2)")
-
-                except AttributeError:
-                    try:
-                        paragraph = description.select_one("p:nth-of-type(3)")
-                    except AttributeError:
-                        paragraph = description.select_one("p:nth-of-type(4)")
-
-                index_of_code = paragraph.get_text(strip=True).find("Product Code:")
-
-                if index_of_code > 1:
-                    product_code = paragraph.get_text(strip=True)[
-                        index_of_code : (index_of_code + 24)
-                    ]
-
-        except AttributeError:
-            product_code = "N/A"
-
-        index_of_material = product_code.find("Material:")
-
-        if index_of_material > 1:
-            product_code = product_code[:index_of_material]
-
-        index_of_care = product_code.find("Care:")
-
-        if index_of_care > 1:
-            product_code = product_code[:index_of_care]
-
-        index_of_dimensions = product_code.find("Dimensions:")
-
-        if index_of_dimensions > 1:
-            product_code = product_code[:index_of_dimensions]
-
-        # If the product doesn't have an '-', then the M from material is returned
-        # in the 24 length from the trimming of the code above.
-        # Being "shamlessly green" now, can be improved later.
-        if product_code[-1] == "M":
-            product_code = product_code[:-1]
-
-        return product_code.lstrip("Product Code:")
+        return currency
 
     def product_colors(self):
         color_fields = self.html.select(
@@ -161,34 +63,110 @@ class BaoBaoProductDocument:
 
         return images
 
-    def product_dimensions(self):
-        description = self.html.select_one(".product-single__description")
-        dimensions = "Unavailable"
+    def _product_description(self):
+        return self.html.select_one(".product-single__description")
 
+    def _index_of_type(self, text, string):
+        return text.find(string)
+
+    def _paragraph(self, position):
+        description = self._product_description()
+
+        return description.select_one(f"p:nth-of-type({position})").get_text(strip=True)
+
+    def _find_text_in_description_block(self, description_type_string):
+        description = self._product_description()
+        description_type = "Unavailable"
+
+        index = self._index_of_type(
+            description.get_text(strip=True), description_type_string
+        )
+
+        if index > 1:
+            description_type = description.get_text(strip=True)[index:]
+
+        return description_type
+
+    def _find_text_in_paragraphs(self, number_of_paragraphs, description_type_string):
+        index = 0
+
+        while number_of_paragraphs > 0 and index <= 0:
+            try:
+                paragraph = self._paragraph(number_of_paragraphs)
+
+            except AttributeError:
+                if number_of_paragraphs > 1:
+                    paragraph = self._paragraph(number_of_paragraphs - 1)
+                else:
+                    paragraph = "Unknown"
+
+            index = self._index_of_type(paragraph, description_type_string)
+
+            if index > 1:
+                paragraph[index:]
+            else:
+                paragraph = "Unavailable"
+
+            number_of_paragraphs = number_of_paragraphs - 1
+
+        return paragraph
+
+    def _get_description_type_text(self, description_type_string):
         try:
-            index_of_dimensions = description.get_text(strip=True).find("Dimensions:")
+            description_type_text = self._find_text_in_description_block(
+                description_type_string
+            )
 
-            if index_of_dimensions > 1:
-                dimensions = description.get_text(strip=True)[index_of_dimensions:]
-
-            if dimensions is None or dimensions == "Unavailable":
-                try:
-                    paragraph = description.select_one("p:nth-of-type(3)")
-
-                except AttributeError:
-                    paragraph = description.select_one("p:nth-of-type(4)")
-
-                index_of_dimensions = paragraph.get_text(strip=True).find("Dimensions:")
-
-                if index_of_dimensions > 1:
-                    dimensions = paragraph.get_text(strip=True)[index_of_dimensions:]
+            # TODO: This doesn't look needed from a sample of products at least for material, but will leave it as a catch.
+            if description_type_text is None or description_type_text == "Unavailable":
+                description_type_text = self._find_text_in_paragraphs(
+                    4, description_type_string
+                )
 
         except AttributeError:
-            dimensions = "N/A"
+            description_type_text = "N/A"
 
-        index_of_material = dimensions.find("Material:")
+        return description_type_text
 
-        if index_of_material > 1:
-            dimensions = dimensions[:index_of_material]
+    def _clean_description_type_text(
+        self, description_type_text, description_type_string
+    ):
+        description_types = ["Material:", "Care:", "Dimensions:", "Product Code:"]
 
-        return dimensions.lstrip("Dimensions:")
+        for description in description_types:
+            if description == description_type_string:
+                description_type_text
+            else:
+                index = self._index_of_type(description_type_text, description)
+
+                if index > 1:
+                    description_type_text = description_type_text[:index]
+
+        return description_type_text.lstrip(description_type_string)
+
+    def product_material(self):
+        description_type_string = "Material:"
+
+        description_type_text = self._get_description_type_text(description_type_string)
+
+        return self._clean_description_type_text(
+            description_type_text, description_type_string
+        )
+
+    def product_sku(self):
+        description_type_string = "Product Code:"
+
+        description_type_text = self._get_description_type_text(description_type_string)
+
+        return self._clean_description_type_text(
+            description_type_text, description_type_string
+        )
+
+    def product_dimensions(self):
+        description_type_string = "Dimensions:"
+
+        description_type_text = self._get_description_type_text(description_type_string)
+
+        return self._clean_description_type_text(
+            description_type_text, description_type_string
+        )

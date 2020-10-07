@@ -29,34 +29,41 @@ class TestBaoBaoProductBuilder(TestCase):
     def test_create_price(self):
         price = self.builder.create_product_price()
 
+        amount = price[0].amount
+        currency = price[0].currency
+
         self.assertNotEqual(price, None)
         self.assertIsInstance(price[0], ProductPrice)
-        self.assertEqual(type(price[0].amount), float)
-        self.assertEqual(type(price[0].currency), str)
+        self.assertEqual(type(amount), float)
+        self.assertEqual(type(currency), str)
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(price[0].__str__(), "$565.0")
-        self.assertEqual(price[0].amount, 565.0)
-        self.assertEqual(price[0].currency, "$")
+        self.assertEqual(str(price[0]), "$565.0")
+        self.assertEqual(amount, 565.0)
+        self.assertEqual(currency, "$")
 
     # Given a product document, a Product class is successfully created.
     def test_create_product(self):
         self.builder.create_product_price()
         product = self.builder.create_product()
 
+        product_name = product[0].name
+
         self.assertNotEqual(product, None)
         self.assertIsInstance(product[0], Product)
-        self.assertEqual(type(product[0].name), str)
-        self.assertNotEqual(type(product[0].name), "")
+        self.assertEqual(type(product_name), str)
+        self.assertNotEqual(type(product_name), "")
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(product[0].name, "LUCENT MATTE CROSSBODY BAG")
+        self.assertEqual(product_name, "LUCENT MATTE CROSSBODY BAG")
 
     # Given a color, a Color class is successfully created.
     def test_create_colors(self):
         colors = self.builder.create_product_colors()
 
+        first_color = colors[0][0]
+
         self.assertNotEqual(colors, None)
-        self.assertIsInstance(colors[0][0], ProductColor)
-        self.assertEqual(type(colors[0][0].color), str)
+        self.assertIsInstance(first_color, ProductColor)
+        self.assertEqual(type(first_color.color), str)
 
     def test_product_stock(self):
         self.builder.create_product_colors()
@@ -64,14 +71,16 @@ class TestBaoBaoProductBuilder(TestCase):
         self.builder.create_product()
         stock = self.builder.create_product_stock()
 
+        first_stock = stock[0][0]
+
         self.assertNotEqual(stock, None)
-        self.assertIsInstance(stock[0][0], ProductStock)
-        self.assertNotEqual(stock[0][0].product, None)
-        self.assertTrue(stock[0][0].quantity is None or type(stock[0].quantity) == int)
-        self.assertNotEqual(stock[0][0].color, None)
+        self.assertIsInstance(first_stock, ProductStock)
+        self.assertNotEqual(first_stock.product, None)
+        self.assertTrue(first_stock.quantity is None or type(stock[0].quantity) == int)
+        self.assertNotEqual(first_stock.color, None)
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
         self.assertEqual(
-            stock[0][0].__str__(),
+            str(first_stock),
             "LUCENT MATTE CROSSBODY BAG - Light Gray - None",
         )
 
@@ -80,13 +89,16 @@ class TestBaoBaoProductBuilder(TestCase):
         self.builder.create_product()
         images = self.builder.create_product_images()
 
+        first_image = images[0][0]
+        first_image_url = first_image.image_url
+
         self.assertNotEqual(images, None)
-        self.assertIsInstance(images[0][0], ProductImage)
-        self.assertEqual(type(images[0][0].image_url), str)
-        self.assertNotEqual(images[0][0].product, None)
+        self.assertIsInstance(first_image, ProductImage)
+        self.assertEqual(type(first_image_url), str)
+        self.assertNotEqual(first_image.product, None)
         # TODO: This is obviously very specific based on the static url given above, and both should be generic.
         self.assertEqual(
-            images[0][0].image_url,
+            first_image_url,
             "//cdn.shopify.com/s/files/1/0274/9988/8734/products/BB08AG685-11-01_1800x1800.jpg?v=1599862324",
         )
 
