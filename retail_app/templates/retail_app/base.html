@@ -20,16 +20,6 @@
     <main class="grid">
       {% include "retail_app/search_bar.html" %}
 
-      <aside class="filtersContainer">
-        <h2 class="title">FILTERS</h2>
-
-        {% for designer in designers %}
-        <div>
-          <p>{{ designer.name }}</p>
-        </div>
-        {% endfor %}
-      </aside>
-
       <section class="productsSection">
         {% block content %}{% endblock content %}
       </section>
