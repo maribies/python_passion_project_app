@@ -14,10 +14,9 @@ class BaoBaoProductDocument:
     def _product_price(self):
         product_price = self.html.select(".product__price")
 
-        text = product_price[0].get_text(strip=True)
-
-        if text == "":
-            text = product_price[1].get_text(strip=True)
+        text = product_price[0].get_text(strip=True) or product_price[1].get_text(
+            strip=True
+        )
 
         return text
 
@@ -40,28 +39,14 @@ class BaoBaoProductDocument:
             ".variant-input-wrap > div > input[data-color-name]"
         )
 
-        colors = []
-
-        for field in color_fields:
-            color = field["value"]
-
-            colors.append(color)
-
-        return colors
+        return [field["value"] for field in color_fields]
 
     def product_images(self):
         carousel = self.html.select(".product__thumbs")
 
         image_elements = carousel[0].select("a")
 
-        images = []
-
-        for image in image_elements:
-            src = image["href"]
-
-            images.append(src)
-
-        return images
+        return [image["href"] for image in image_elements]
 
     def _product_description(self):
         return self.html.select_one(".product-single__description")

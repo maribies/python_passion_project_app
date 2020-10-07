@@ -21,7 +21,7 @@ class TestBaoBaoProductBuilder(TestCase):
             "url": "https://us-store.isseymiyake.com/collections/baobao/products/lucent-matte-crossbody-bag?variant=32170657579102"
         }
         self.products = BaoBaoProducts()
-        self.html = BaoBaoHtml.get_html_data(self, self.product.get("url"))
+        self.html = BaoBaoHtml().get_html_data(self.product.get("url"))
         self.document = BaoBaoProductDocument(self.html)
         self.builder = BaoBaoProductBuilder(self.document, self.product)
 

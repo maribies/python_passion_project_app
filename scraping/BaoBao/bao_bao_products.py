@@ -14,7 +14,7 @@ class BaoBaoProducts:
     def get_products_urls(self):
         products_urls = []
 
-        html = BaoBaoHtml.get_html_data(self, self.site_url)
+        html = BaoBaoHtml().get_html_data(self.site_url)
 
         links = html.select(".grid-product__link")
 

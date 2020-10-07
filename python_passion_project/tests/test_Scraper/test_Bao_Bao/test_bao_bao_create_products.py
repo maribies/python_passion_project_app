@@ -17,13 +17,13 @@ class TestGetBaoBaoProducts(TestCase):
 
     # Given [urls], creates products.
     def test_create_product(self):
-        products = BaoBao.create_products(self, self.product_url)
+        products = BaoBao().create_products(self.product_url)
 
         self.assertNotEqual(products, None)
         self.assertEqual(products, 1)
 
     def test_create_products(self):
-        products = BaoBao.create_products(self, self.products_urls)
+        products = BaoBao().create_products(self.products_urls)
 
         self.assertNotEqual(products, None)
         self.assertEqual(products, len(self.products_urls))
