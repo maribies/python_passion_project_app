@@ -43,7 +43,7 @@ h3 {
   grid-template-columns: repeat(4, 1fr);;
   grid-template-areas: 
     "search search search search"
-    "products products products products";
+    "aside products products products";
     grid-row-gap: 1.272rem; 
     grid-column-gap: 1.272rem;
   padding: 0 2rem;
@@ -114,6 +114,14 @@ h3 {
   padding-left: .5rem;
 }
 
+.filter {
+  background-color: lavender;
+  border-radius: .5rem;
+  padding: .5rem;
+  margin-bottom: .5rem;
+  border: none;
+}
+
 .quantitiesContainer {
   display: inline-flex;
   justify-content: center;
@@ -143,7 +151,7 @@ h3 {
     grid-template-columns: 1fr  1fr 2fr 1fr;
     grid-template-areas: 
       "search search search search search"
-      "products products products products products";
+      "aside products products products products";
   }
 }
 
