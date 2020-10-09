@@ -2,7 +2,8 @@
   const products = document.getElementsByClassName('productContainer');
 
   [].forEach.call(products, element => {
-    element.addEventListener("mouseover", toggleProductInfo);
+    element.addEventListener("mouseenter", toggleProductInfo);
+    element.addEventListener("mouseleave", toggleProductInfo)
   });
 
   function toggleProductInfo() {
