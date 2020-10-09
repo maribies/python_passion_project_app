@@ -57,7 +57,15 @@ class BaoBaoProductDocument:
     def _paragraph(self, position):
         description = self._product_description()
 
-        return description.select_one(f"p:nth-of-type({position})").get_text(strip=True)
+        try:
+            paragraph = description.select_one(f"p:nth-of-type({position})").get_text(
+                strip=True
+            )
+
+        except AttributeError:
+            paragraph = "Unavailable"
+
+        return paragraph
 
     def _find_text_in_description_block(self, description_type_string):
         description = self._product_description()
@@ -76,14 +84,7 @@ class BaoBaoProductDocument:
         index = 0
 
         while number_of_paragraphs > 0 and index <= 0:
-            try:
-                paragraph = self._paragraph(number_of_paragraphs)
-
-            except AttributeError:
-                if number_of_paragraphs > 1:
-                    paragraph = self._paragraph(number_of_paragraphs - 1)
-                else:
-                    paragraph = "Unknown"
+            paragraph = self._paragraph(number_of_paragraphs)
 
             index = self._index_of_type(paragraph, description_type_string)
 
@@ -127,7 +128,9 @@ class BaoBaoProductDocument:
                 if index > 1:
                     description_type_text = description_type_text[:index]
 
-        return description_type_text.lstrip(description_type_string)
+        text = description_type_text.lstrip(description_type_string)
+
+        return text.strip()
 
     def product_material(self):
         description_type_string = "Material:"
