@@ -2,18 +2,14 @@
   const products = document.getElementsByClassName('productContainer');
 
   [].forEach.call(products, element => {
-    // TODO: mouseenter has better UX, and maybe combined with mouseleave or something else
-    // for mouseover to achieve the truely desired effect...
-    element.addEventListener("mouseenter", e => { toggleProductInfo(element, e) });
+    element.addEventListener("mouseenter", toggleProductInfo);
+    element.addEventListener("mouseleave", toggleProductInfo)
   });
 
-  function toggleProductInfo(element, e) {
-    // TODO: Not producing desired results.
-    e.stopPropagation();
-
-    const images = element.getElementsByClassName('productImage');
-    const stock = element.getElementsByClassName('stockContainer');
-    const description = element.getElementsByClassName('productDescription');
+  function toggleProductInfo() {
+    const images = this.getElementsByClassName('productImage');
+    const stock = this.getElementsByClassName('stockContainer');
+    const description = this.getElementsByClassName('productDescription');
 
     [].forEach.call(images, imageElement => {
       if (imageElement.classList.contains('show')) {
