@@ -78,11 +78,7 @@ class TestBaoBaoProductBuilder(TestCase):
         self.assertNotEqual(first_stock.product, None)
         self.assertTrue(first_stock.quantity is None or type(stock[0].quantity) == int)
         self.assertNotEqual(first_stock.color, None)
-        # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(
-            str(first_stock),
-            "LUCENT MATTE CROSSBODY BAG - Light Gray - None",
-        )
+        self.assertTrue(len(str(first_stock)) > 1)
 
     def test_product_images(self):
         self.builder.create_product_price()
@@ -96,11 +92,7 @@ class TestBaoBaoProductBuilder(TestCase):
         self.assertIsInstance(first_image, ProductImage)
         self.assertEqual(type(first_image_url), str)
         self.assertNotEqual(first_image.product, None)
-        # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(
-            first_image_url,
-            "//cdn.shopify.com/s/files/1/0274/9988/8734/products/BB08AG685-11-01_1800x1800.jpg?v=1599862324",
-        )
+        self.assertTrue(len(first_image_url) > 1)
 
     def test_search_product_keywords(self):
         self.builder.create_product_price()

@@ -31,6 +31,7 @@ class BaoBaoProductBuilder:
 
     def create_product(self):
         return Product.objects.update_or_create(
+            site_url__exact=self.product.get("url"),
             name=self.document.product_name(),
             designer="Issey Miyake",
             product_price=ProductPrice.objects.get(

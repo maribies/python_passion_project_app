@@ -48,11 +48,8 @@ class TestBaoBaoProductDocuments(TestCase):
         self.assertNotEqual(material, "")
         self.assertNotEqual(material, None)
         self.assertIsInstance(material, str)
-        # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(
-            material,
-            "Surface: Vinyl chloride resin / Base cloth: 100% polyester / Lining: 100% nylon / Tape: 100% nylon / Part: Artificial leather",
-        )
+        self.assertTrue(len(material) > 1)
+        # TODO: Try a regular expression test for a combo of different types of material?
 
     def test_product_sku(self):
         sku = self.product.product_sku()
@@ -60,8 +57,7 @@ class TestBaoBaoProductDocuments(TestCase):
         self.assertNotEqual(sku, "")
         self.assertNotEqual(sku, None)
         self.assertIsInstance(sku, str)
-        # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(sku, "BB08AG685")
+        self.assertTrue(9 <= len(sku) <= 10)
 
     def test_product_colors(self):
         color = self.product.product_colors()
@@ -70,8 +66,7 @@ class TestBaoBaoProductDocuments(TestCase):
         self.assertNotEqual(color, None)
         self.assertIsInstance(color, list)
         self.assertEqual(type(color[0]), str)
-        # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(color, ["Light Gray", "Gray", "Black"])
+        self.assertTrue(len(color[0]) >= 3)
 
     def test_product_images(self):
         images = self.product.product_images()
@@ -80,15 +75,6 @@ class TestBaoBaoProductDocuments(TestCase):
         self.assertNotEqual(images, None)
         self.assertIsInstance(images, list)
         self.assertEqual(type(images[0]), str)
-
-    def test_product_dimensions_none(self):
-        dimensions = self.product.product_dimensions()
-
-        self.assertNotEqual(dimensions, None)
-        self.assertIsInstance(dimensions, str)
-        self.assertNotEqual(dimensions, "")
-        # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(dimensions, "Unavailable")
 
     def test_product_dimensions(self):
         html = BaoBaoHtml.get_html_data(
@@ -102,8 +88,6 @@ class TestBaoBaoProductDocuments(TestCase):
         self.assertNotEqual(dimensions, None)
         self.assertIsInstance(dimensions, str)
         self.assertNotEqual(dimensions, "")
-        # TODO: This is obviously very specific based on the static url given above, and both should be generic.
-        self.assertEqual(dimensions, "9.3 in x 9.3 in x 3.1 in")
 
     def test_product_description(self):
         description = self.product._product_description()
@@ -131,10 +115,12 @@ class TestBaoBaoProductDocuments(TestCase):
     def test_product_description_paragraph(self):
         paragraph_one = self.product._paragraph(1)
         paragraph_two = self.product._paragraph(2)
+        paragraph_test = "Test to Gaurantee that a paragraph exists"
 
         self.assertIsInstance(paragraph_one, str)
         self.assertNotEqual(paragraph_one, "")
-        self.assertNotEqual(paragraph_two, paragraph_one)
+        self.assertNotEqual(paragraph_two, "")
+        self.assertNotEqual(paragraph_test, paragraph_one)
 
     def test_find_text_in_description_block(self):
         text = self.product._find_text_in_description_block("Material:")
@@ -166,20 +152,36 @@ class TestBaoBaoProductDocuments(TestCase):
         self.assertEqual(paragraph_empty, "Unavailable")
 
     def test_clean_description_type_text(self):
-        description = "Material: Polyvinylchloride / Polyester / Nylon Polyurethane Brass Zinc AlloySurface: Vinyl chloride resin / Base cloth: 100% polyester / Lining: 100% nylon / Tape: 100% nylon / Part: Artificial leatherCare: To remove dirt, wipe gently with a damp, tightly wrung soft cloth, and then wipe dry.‚  Do not use paint thinner, benzene, or detergent. To dry, wipe with a soft cloth.Product Code: BB06-AG676Dimensions: 9 x 2.75 x 1in"
+        # In the find_text from above, the string is already truncated to where the desired text is, or returns unavailable, and it just needs further cleaned for any data on the left.
+        descriptionMaterial = "Material: Polyvinylchloride / Polyester / Nylon Polyurethane Brass Zinc Alloy Surface: Vinyl chloride resin / Base cloth: 100% polyester / Lining: 100% nylon / Tape: 100% nylon / Part: Artificial leatherCare: To remove dirt, wipe gently with a damp, tightly wrung soft cloth, and then wipe dry.‚  Do not use paint thinner, benzene, or detergent. To dry, wipe with a soft cloth.Product Code: BB06-AG676Dimensions: 9 x 2.75 x 1in"
+        descriptionDimension = "Dimensions: 9 x 2.75 x 1inProduct Code: BB06-AG676"
+        descriptionSku = "Product Code: BB06-AG676Dimensions: 9 x 2.75 x 1in"
+        descriptionNoDimension = "Unavailable"
 
-        material = self.product._clean_description_type_text(description, "Material:")
-        sku = self.product._clean_description_type_text(description, "Product Code:")
+        material = self.product._clean_description_type_text(
+            descriptionMaterial, "Material:"
+        )
+        sku = self.product._clean_description_type_text(descriptionSku, "Product Code:")
         dimensions = self.product._clean_description_type_text(
-            description, "Dimensions:"
+            descriptionDimension, "Dimensions:"
+        )
+        no_dimensions = self.product._clean_description_type_text(
+            descriptionNoDimension, "Dimensions:"
         )
 
         self.assertNotEqual(material, None)
         self.assertIsInstance(material, str)
         self.assertNotEqual(material, "")
+        self.assertEqual(
+            material,
+            "Polyvinylchloride / Polyester / Nylon Polyurethane Brass Zinc Alloy Surface: Vinyl chloride resin / Base cloth: 100% polyester / Lining: 100% nylon / Tape: 100% nylon / Part: Artificial leather",
+        )
         self.assertNotEqual(sku, None)
         self.assertIsInstance(sku, str)
         self.assertNotEqual(sku, "")
+        self.assertEqual(sku, "BB06-AG676")
         self.assertNotEqual(dimensions, None)
         self.assertIsInstance(dimensions, str)
         self.assertNotEqual(dimensions, "")
+        self.assertEqual(dimensions, "9 x 2.75 x 1in")
+        self.assertEqual(no_dimensions, "Unavailable")
