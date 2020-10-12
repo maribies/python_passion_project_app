@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from .views import index, search
+from .views import index, search, filters
 
 app_name = "retail_app"
 
@@ -11,4 +11,6 @@ urlpatterns = [
     path("", index, name="index"),
     # Search results
     path("search/", search, name="search"),
+    # Filter results
+    path("filters/", filters, name="filters"),
 ]

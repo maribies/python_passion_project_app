@@ -1,0 +1,14 @@
+
+<aside class="filtersContainer">	
+  <h2 class="title">FILTERS</h2>	
+
+  {% for designer in designers %}	
+  <div>	
+    <form action="{% url 'retail_app:filters' %}" method="get">
+      <button class="filter" name="designer_filter" value="{{ designer.name }}">
+        {{ designer.name }}
+      </button>
+    </form>
+  </div>	
+  {% endfor %}	
+</aside>
