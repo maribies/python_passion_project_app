@@ -1,11 +1,13 @@
 {% extends "retail_app/base.html" %}
 
 {% block content %}
+<div class="resultsWrapper">
   <h2 class="title results">Results</h2>
 
   <h3 class="text results">filter for</h3>
   <h3 class="text results filter">{{chosen_filter}}</h3>
   <h3 class="text results">{{results}} items</h3>
+</div>
 
   <div class="productsContainer">
     {% for product in products %}
