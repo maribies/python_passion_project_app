@@ -12,9 +12,3 @@ class TestProductsManager(TestCase):
 
         self.assertNotEqual(products, None)
         self.assertNotEqual(products.first, None)
-
-    def test_stock_ojects(self):
-        products = Product.objects.stock_objects()
-
-        self.assertNotEqual(products, None)
-        self.assertNotEqual(products.first, None)

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from model_bakery import baker
-from retail_app.serializers import ProductSerializer
+from api.serializers import ProductSerializer
 import json
 
 

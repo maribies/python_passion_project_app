@@ -1,6 +1,6 @@
 from django.test import TestCase
 from model_bakery import baker
-from retail_app.serializers import ImageSerializer
+from api.serializers import ImageSerializer
 
 
 class TestImageSerializer(TestCase):

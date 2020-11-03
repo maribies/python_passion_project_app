@@ -1,5 +1,5 @@
 from retail_app.models import Product
-from retail_app.serializers import (
+from . import (
     PriceSerializer,
     ImageSerializer,
     StockSerializer,
@@ -36,7 +36,7 @@ class ProductSerializer:
                 "size": self.product.size,
                 "dimensions": self.product.dimensions,
                 "sku": self.product.sku,
-                "product_price": PriceSerializer(self.product.product_price).to_json(),
+                "product_price": PriceSerializer(self.product.product_price).for_json(),
                 "stock": [
                     StockSerializer(stock).for_json() for stock in self.product_stock()
                 ],
