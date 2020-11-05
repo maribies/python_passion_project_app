@@ -17,7 +17,11 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = [path("admin/", admin.site.urls), path("", include("retail_app.urls"))]
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", include("retail_app.urls")),
+    path("api/", include("api.urls")),
+]
 
 if settings.DEBUG:
     import debug_toolbar

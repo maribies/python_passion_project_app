@@ -1,4 +1,4 @@
-from model_bakery.recipe import Recipe, foreign_key
+from model_bakery.recipe import Recipe, foreign_key, related, seq
 from retail_app.models import (
     Collection,
     Designer,
@@ -11,6 +11,7 @@ from retail_app.models import (
     Season,
 )
 from decimal import Decimal
+from itertools import cycle
 
 collection_test = Recipe(Collection, name="Test Collection")
 
@@ -38,10 +39,17 @@ product_test = Recipe(
 )
 
 color_test = Recipe(ProductColor, color="purple")
+color_test_multiple = Recipe(ProductColor, color="blue")
 
 image_test = Recipe(
     ProductImage,
     image_url="https://www.imageurl.jpeg",
+    product=foreign_key(product_test),
+)
+
+image_test_multiple = Recipe(
+    ProductImage,
+    image_url="https://www.imageurl2.jpeg",
     product=foreign_key(product_test),
 )
 
@@ -52,6 +60,13 @@ stock_test = Recipe(
     quantity=1,
 )
 
+stock_test_multiple = Recipe(
+    ProductStock,
+    product=foreign_key(product_test),
+    color=foreign_key(color_test_multiple),
+    quantity=4,
+)
+
 search_test = Recipe(
     SearchProductKeywords,
     product=foreign_key(product_test),
@@ -59,3 +74,59 @@ search_test = Recipe(
 )
 
 season_test = Recipe(Season, name="SS20")
+
+product_test_related = Recipe(
+    Product,
+    name="Test Product",
+    designer="Test Designer",
+    site_url="https://www.testsite.com",
+    condition="New",
+    season="SS20",
+    collection="Test Collection",
+    category="Handbags",
+    brand="Test Brand",
+    material="test materials made of lots of things",
+    size="OS",
+    dimensions="10in long and 18in wide and 3in depth",
+    sku="TESTSKU89012",
+    product_price=foreign_key(price_test),
+    productstock_set=related(stock_test),
+    productimage_set=related(image_test),
+    searchproductkeywords_set=related(search_test),
+)
+
+product_test_related_multiples = Recipe(
+    Product,
+    name="Test Product",
+    designer="Test Designer",
+    site_url="https://www.testsite.com",
+    condition="New",
+    season="SS20",
+    collection="Test Collection",
+    category="Handbags",
+    brand="Test Brand",
+    material="test materials made of lots of things",
+    size="OS",
+    dimensions="10in long and 18in wide and 3in depth",
+    sku="TESTSKU89012",
+    product_price=foreign_key(price_test),
+    productstock_set=related(stock_test, stock_test_multiple),
+    productimage_set=related(image_test, image_test_multiple),
+    searchproductkeywords_set=related(search_test),
+)
+
+products_test = Recipe(
+    Product,
+    name=seq("Test Product"),
+    designer="Test Designer",
+    site_url=seq("https://www.testsite", suffix=".com"),
+    condition="New",
+    season="SS20",
+    collection="Test Collection",
+    category="Handbags",
+    brand="Test Brand",
+    material="test materials made of lots of things",
+    size="OS",
+    dimensions="10in long and 18in wide and 3in depth",
+    sku=seq("TESTSKU890-"),
+)
