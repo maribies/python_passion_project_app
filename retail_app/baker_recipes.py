@@ -1,4 +1,4 @@
-from model_bakery.recipe import Recipe, foreign_key, related
+from model_bakery.recipe import Recipe, foreign_key, related, seq
 from retail_app.models import (
     Collection,
     Designer,
@@ -11,6 +11,7 @@ from retail_app.models import (
     Season,
 )
 from decimal import Decimal
+from itertools import cycle
 
 collection_test = Recipe(Collection, name="Test Collection")
 
@@ -112,4 +113,20 @@ product_test_related_multiples = Recipe(
     productstock_set=related(stock_test, stock_test_multiple),
     productimage_set=related(image_test, image_test_multiple),
     searchproductkeywords_set=related(search_test),
+)
+
+products_test = Recipe(
+    Product,
+    name=seq("Test Product"),
+    designer="Test Designer",
+    site_url=seq("https://www.testsite", suffix=".com"),
+    condition="New",
+    season="SS20",
+    collection="Test Collection",
+    category="Handbags",
+    brand="Test Brand",
+    material="test materials made of lots of things",
+    size="OS",
+    dimensions="10in long and 18in wide and 3in depth",
+    sku=seq("TESTSKU890-"),
 )

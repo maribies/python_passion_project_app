@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # My apps
     "retail_app",
+    "api",
     # Default django apps.
     "django.contrib.admin",
     "django.contrib.auth",
