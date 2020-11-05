@@ -7,7 +7,7 @@ class TestImageSerializer(TestCase):
     def setUp(self):
         self.image = baker.make_recipe("retail_app.image_test")
 
-    def test_for_json(self):
-        result = ImageSerializer(self.image).for_json()
+    def test_to_json(self):
+        result = ImageSerializer(self.image).to_json()
 
         self.assertEqual(result, "https://www.imageurl.jpeg")

@@ -3,7 +3,6 @@ from . import (
     PriceSerializer,
     ImageSerializer,
     StockSerializer,
-    KeywordsSerializer,
 )
 import json
 
@@ -17,9 +16,6 @@ class ProductSerializer:
 
     def product_images(self):
         return self.product.productimage_set.all()
-
-    def product_keywords(self):
-        return self.product.searchproductkeywords_set.all()
 
     def to_json(self):
         return json.dumps(
@@ -36,16 +32,12 @@ class ProductSerializer:
                 "size": self.product.size,
                 "dimensions": self.product.dimensions,
                 "sku": self.product.sku,
-                "product_price": PriceSerializer(self.product.product_price).for_json(),
+                "product_price": PriceSerializer(self.product.product_price).to_json(),
                 "stock": [
-                    StockSerializer(stock).for_json() for stock in self.product_stock()
+                    StockSerializer(stock).to_json() for stock in self.product_stock()
                 ],
                 "images": [
-                    ImageSerializer(image).for_json() for image in self.product_images()
-                ],
-                "keywords": [
-                    KeywordsSerializer(keyword).for_json()
-                    for keyword in self.product_keywords()
+                    ImageSerializer(image).to_json() for image in self.product_images()
                 ],
             }
         )

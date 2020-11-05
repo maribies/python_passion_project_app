@@ -7,5 +7,5 @@ from .views import api
 app_name = "api"
 
 urlpatterns = [
-    path("", api.get_data),
+    path("v1/products/", api.get_data),
 ]

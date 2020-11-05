@@ -29,13 +29,6 @@ class TestProductSerializer(TestCase):
         self.assertEqual(len(result_empty), 0)
         self.assertNotEqual(len(result), 0)
 
-    def test_product_keywords(self):
-        result_empty = ProductSerializer(self.product_empty_related).product_keywords()
-        result = ProductSerializer(self.product).product_keywords()
-
-        self.assertEqual(len(result_empty), 0)
-        self.assertNotEqual(len(result), 0)
-
     def test_to_json(self):
         result = ProductSerializer(self.product).to_json()
 
@@ -58,7 +51,6 @@ class TestProductSerializer(TestCase):
                     "product_price": "$1234.56",
                     "stock": [{"color": "purple", "quantity": 1}],
                     "images": ["https://www.imageurl.jpeg"],
-                    "keywords": ["some keywords to search for things in a string"],
                 }
             ),
         )
@@ -85,7 +77,6 @@ class TestProductSerializer(TestCase):
                     "product_price": "$1234.56",
                     "stock": [],
                     "images": [],
-                    "keywords": [],
                 }
             ),
         )
@@ -118,7 +109,6 @@ class TestProductSerializer(TestCase):
                         "https://www.imageurl.jpeg",
                         "https://www.imageurl2.jpeg",
                     ],
-                    "keywords": ["some keywords to search for things in a string"],
                 }
             ),
         )

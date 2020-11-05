@@ -8,7 +8,7 @@ class TestStockSerializer(TestCase):
     def setUp(self):
         self.stock = baker.make_recipe("retail_app.stock_test")
 
-    def test_for_json(self):
-        result = StockSerializer(self.stock).for_json()
+    def test_to_json(self):
+        result = StockSerializer(self.stock).to_json()
 
         self.assertEqual(result, {"color": "purple", "quantity": 1})

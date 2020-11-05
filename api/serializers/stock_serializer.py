@@ -8,8 +8,8 @@ class StockSerializer:
         self.stock = stock
         self.quantity = stock.quantity
 
-    def for_json(self):
+    def to_json(self):
         return {
-            "color": ColorSerializer.for_json(self.stock),
+            "color": ColorSerializer.to_json(self.stock),
             "quantity": self.quantity,
         }

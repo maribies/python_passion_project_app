@@ -7,5 +7,5 @@ class PriceSerializer:
         self.currency = price.currency
         self.amount = price.amount
 
-    def for_json(self):
+    def to_json(self):
         return f"{self.currency}{self.amount}"
