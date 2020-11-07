@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import re
 
 from retail_app.models import (
     Designer,
@@ -17,8 +19,17 @@ def search(request):
         if query is None:
             raise Exception("Query can't be None.")
 
+        query_text = re.sub(r"\?(.*)", " ", query).strip()
+        query_page = re.findall(r"\d+", query)
+        if len(query_page) == 0:
+            page = 1
+        else:
+            page = query_page.pop(0)
+
+        print(page)
+
         keywords = (
-            SearchProductKeywords.objects.filter(keywords__icontains=query)
+            SearchProductKeywords.objects.filter(keywords__icontains=query_text)
             .select_related("product")
             .select_related("product__product_price")
             .prefetch_related(
@@ -30,10 +41,20 @@ def search(request):
         products = [keyword.product for keyword in keywords]
         designers = Designer.objects.order_by("name")
 
+        paginated_products = Paginator(products, 24)
+
+        try:
+            products = paginated_products.page(page)
+        except PageNotAnInteger:
+            products = paginated_products.page(1)
+        except EmptyPage:
+            products = paginated_products.page(paginated_products.num_pages)
+
         context = {
             "products": products,
             "designers": designers,
             "results": len(keywords),
+            "query_text": query_text,
             "query": query,
         }
 
