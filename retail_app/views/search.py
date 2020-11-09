@@ -15,19 +15,13 @@ def search(request):
     """Show search results for all products and designers."""
     try:
         query = request.GET.get("search")
+        page = request.GET.get("page")
 
         if query is None:
             raise Exception("Query can't be None.")
 
-        query_text = re.sub(r"\?(.*)", " ", query).strip()
-        query_page = re.findall(r"\d+", query)
-        if len(query_page) == 0:
-            page = 1
-        else:
-            page = query_page.pop(0)
-
         keywords = (
-            SearchProductKeywords.objects.filter(keywords__icontains=query_text)
+            SearchProductKeywords.objects.filter(keywords__icontains=query)
             .select_related("product")
             .select_related("product__product_price")
             .prefetch_related(
@@ -52,7 +46,6 @@ def search(request):
             "products": products,
             "designers": designers,
             "results": len(keywords),
-            "query_text": query_text,
             "query": query,
         }
 

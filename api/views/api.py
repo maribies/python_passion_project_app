@@ -37,7 +37,7 @@ def get_data(request):
         paginator = Paginator(products, per_page)
         products_for_serialization = paginator.get_page(page)
 
-        num_of_pages = math.ceil(len(products) / int(per_page))
+        num_of_pages = paginator.num_pages
 
         if int(page) > num_of_pages or int(page) == 0:
             products_for_serialization = []
@@ -52,5 +52,7 @@ def get_data(request):
         return JsonResponse(products_data)
 
     # If error, send error message.
+    except ValueError:
+        return JsonResponse({"products": []})
     except Exception as e:
         print("error!", e)

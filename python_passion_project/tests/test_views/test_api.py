@@ -1,10 +1,6 @@
 from django.test import TestCase, Client
-from api.views import api
 from model_bakery import baker
 import json
-from retail_app.models import (
-    Product,
-)
 
 
 class TestApiView(TestCase):
@@ -34,6 +30,19 @@ class TestApiView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(content, '{"products": []}')
         self.assertEqual(len(products), 10)
+
+    def test_get_data_pagination_word(self):
+        response = self.client.get(
+            "/api/v1/products/",
+            {"page": "one", "per_page": 10},
+        )
+
+        content = response.content.decode("utf-8")
+
+        products = json.loads(content)["products"]
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(content, '{"products": []}')
+        self.assertEqual(len(products), 0)
 
     def test_get_data_pagination_at_end(self):
         response = self.client.get(
@@ -108,9 +117,11 @@ class TestApiView(TestCase):
         self.assertEqual(len(products), 0)
 
     def test_get_data_search(self):
+        self.product = baker.make_recipe("retail_app.product_test_related")
+
         response = self.client.get(
             "/api/v1/products/",
-            {"search": "Test Product 21"},
+            {"search": "some keywords to search for things in a string"},
         )
 
         content = response.content.decode("utf-8")
@@ -121,4 +132,4 @@ class TestApiView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(content, '{"products": []}')
         self.assertEqual(len(products), 1)
-        self.assertEqual(first_product_name, "Test Product21")
+        self.assertEqual(first_product_name, "Test Product")

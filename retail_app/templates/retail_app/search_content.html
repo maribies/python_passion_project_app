@@ -3,10 +3,10 @@
 {% block content %}
   <h2 class="title results">Results</h2>
 
-  <h3 class="text results">for "{{query_text}}"</h3>
+  <h3 class="text results">for "{{query}}"</h3>
   <h3 class="text results">{{results}} items</h3>
 
   <div class="productsContainer">
-    {% include "retail_app/products.html" with products_page=products query=query_text %}
+    {% include "retail_app/products.html" with products_page=products query=query %}
   </div>
 {% endblock content %}
