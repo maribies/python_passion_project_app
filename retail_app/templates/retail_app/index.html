@@ -1,9 +1,13 @@
 {% extends "retail_app/base.html" %}
 
 {% block content %}
-  <h2>Featured</h2>
+    <div class="contentHeader">
+        <h2>Featured</h2>
 
-  <div class="productsContainer">
-  {% include "retail_app/products.html" with products_page=products %}
-  </div>
+        {% include "retail_app/paginator.html" with products_page=products %}
+    </div>
+
+    <div class="productsContainer">
+    {% include "retail_app/products.html" with products_page=products %}
+    </div>
 {% endblock content %}
