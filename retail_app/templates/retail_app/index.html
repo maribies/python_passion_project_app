@@ -1,44 +1,13 @@
 {% extends "retail_app/base.html" %}
 
 {% block content %}
-  <h2>Featured</h2>
+    <div class="contentHeader">
+        <h2>Featured</h2>
 
-  <div class="productsContainer">
-    {% for product in products %}
-    <div class="productContainer">
-      <a class="link" href="{{ product.site_url }}">
-        {% for image in product.productimage_set.all|slice:"0:1" %}
-          <img class="productImage show" src="{{ image.image_url }}" alt="{{ image.product.name }}">
-        {% endfor %}
-        {% for image in product.productimage_set.all|slice:"1:2" %}
-          <img class="productImage hide" src="{{ image.image_url }}" alt="{{ image.product.name }}">
-        {% endfor %}
-
-        <h3 class="title">{{ product.designer }}</h3>
-        <h3 class="text">{{ product.name }}</h3>
-        <p class="text">{{ name }}</p>
-
-        <div class="stockContainer">
-          {% for stock in product.productstock_set.all %}
-            <div class="quantitiesContainer">
-              <p class="text stock">{{ stock.color }}</p>
-              <p class="text stock">{{ stock.quantity }}</p>
-            </div>
-          {% endfor %}
-        </div>
-
-        <div class="productDescription hide">
-          <p class="text">{{ product.material }}</p>
-          <p class="text">{{ product.size }}</p>
-          <p class="text">{{ product.dimensions }}</p>
-          <p class="text">{{ product.sku }}</p>
-        </div>
-
-        <p class="text">{{ product.product_price }}</p>
-      </a>
+        {% include "retail_app/paginator.html" with products_page=products %}
     </div>
-    {% empty %}
-      <h2 class="subtitle">NO RESULTS FOUND (YET!)</h2>
-    {% endfor %}
-  </div>
+
+    <div class="productsContainer">
+    {% include "retail_app/products.html" with products_page=products %}
+    </div>
 {% endblock content %}

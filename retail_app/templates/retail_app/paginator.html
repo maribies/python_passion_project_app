@@ -1,0 +1,23 @@
+<div class="pagination">
+  <span>
+      {% if products_page.has_previous %}
+          <a class="link text filter" href="?{% if query %}search={{query}}&{% endif %}page=1">&laquo; first</a>
+          <a class="link text filter" href="?{% if query %}search={{query}}&{% endif %}page={{ products_page.previous_page_number }}">previous</a>
+      {% else %}
+          <span class="link text disabledFilter">&laquo; first</span>
+          <span class="link text disabledFilter">previous</span>
+      {% endif %}
+
+      <span class="link text title">
+          {{ products_page.number }} of {{ products_page.paginator.num_pages }}
+      </span>
+
+      {% if products_page.has_next %}
+          <a class="link text filter" href="?{% if query %}search={{ query }}&{% endif %}page={{ products_page.next_page_number }}">next</a>
+          <a class="link text filter" href="?{% if query %}search={{ query }}&{% endif %}page={{ products_page.paginator.num_pages }}">last &raquo;</a>
+      {% else %}
+          <span class="link text disabledFilter">&laquo; next</span>
+          <span class="link text disabledFilter">last</span>
+      {% endif %}
+  </span>
+</div>

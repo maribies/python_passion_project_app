@@ -144,6 +144,15 @@ h3 {
   margin-right: 8px;
 }
 
+.disabledFilter {
+  padding: .5rem;
+  margin-right: 8px;
+}
+
+.link.text.title {
+  margin-right: 16px;
+}
+
 .quantitiesContainer {
   display: inline-flex;
   justify-content: center;
@@ -162,6 +171,13 @@ h3 {
 
 .show {
   display: inline-block;
+}
+
+.contentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 @media screen and (min-width: 400px){
