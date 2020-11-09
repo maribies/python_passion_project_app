@@ -26,8 +26,6 @@ def search(request):
         else:
             page = query_page.pop(0)
 
-        print(page)
-
         keywords = (
             SearchProductKeywords.objects.filter(keywords__icontains=query_text)
             .select_related("product")

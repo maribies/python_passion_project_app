@@ -1,8 +1,9 @@
 from django.http import JsonResponse
 from api.serializers import ProductSerializer
-from retail_app.models import Product
+from retail_app.models import Product, SearchProductKeywords
 import json
 from django.core.paginator import Paginator
+import math
 
 
 def get_data(request):
@@ -12,26 +13,41 @@ def get_data(request):
         if request is None:
             raise Exception("Houston, we have a problem.")
 
-        # search = request.GET.get("search")
-        page = request.GET.get("page")
-        per_page = request.GET.get("per_page")
+        page = request.GET.get("page", 1)
+        per_page = request.GET.get("per_page", 12)
 
-        products = Product.objects.fully_loaded_objects()
-        products_for_serialization = products
+        search = request.GET.get("search")
 
-        if page is not None and per_page is not None:
-            paginator = Paginator(products, per_page)
-            products_for_serialization = paginator.get_page(page)
+        if search is not None:
+            keywords = (
+                SearchProductKeywords.objects.filter(keywords__icontains=search)
+                .select_related("product")
+                .select_related("product__product_price")
+                .prefetch_related(
+                    "product__productimage_set",
+                    "product__productstock_set",
+                    "product__productstock_set__color",
+                )
+            )
+            products = [keyword.product for keyword in keywords]
 
-            if len(products) / int(per_page) < int(page) or int(page) == 0:
-                products_for_serialization = []
+        else:
+            products = Product.objects.fully_loaded_objects()
 
-        serializedProducts = [
+        paginator = Paginator(products, per_page)
+        products_for_serialization = paginator.get_page(page)
+
+        num_of_pages = math.ceil(len(products) / int(per_page))
+
+        if int(page) > num_of_pages or int(page) == 0:
+            products_for_serialization = []
+
+        serialized_products = [
             ProductSerializer(product).to_json()
             for product in products_for_serialization
         ]
 
-        products_data = {"products": serializedProducts}
+        products_data = {"products": serialized_products}
 
         return JsonResponse(products_data)
 
