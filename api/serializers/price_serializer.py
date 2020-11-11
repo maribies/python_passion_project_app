@@ -1,5 +1,4 @@
 from retail_app.models import ProductPrice
-import json
 
 
 class PriceSerializer:
@@ -7,5 +6,5 @@ class PriceSerializer:
         self.currency = price.currency
         self.amount = price.amount
 
-    def to_json(self):
+    def to_dict(self):
         return f"{self.currency}{self.amount}"

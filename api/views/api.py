@@ -1,8 +1,7 @@
 from django.http import JsonResponse
 from api.serializers import ProductSerializer
 from retail_app.models import Product, SearchProductKeywords
-import json
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, InvalidPage
 import math
 
 
@@ -15,7 +14,6 @@ def get_data(request):
 
         page = request.GET.get("page", 1)
         per_page = request.GET.get("per_page", 12)
-
         search = request.GET.get("search")
 
         if search is not None:
@@ -37,17 +35,32 @@ def get_data(request):
         paginator = Paginator(products, per_page)
         products_for_serialization = paginator.get_page(page)
 
+        page = int(page)
         num_of_pages = paginator.num_pages
+        try:
+            next_page = int(paginator.page(page).next_page_number())
+        except InvalidPage:
+            next_page = ""
+        try:
+            previous_page = int(paginator.page(page).previous_page_number())
+        except InvalidPage:
+            previous_page = ""
 
-        if int(page) > num_of_pages or int(page) == 0:
+        if int(page) > num_of_pages or page == 0:
             products_for_serialization = []
 
         serialized_products = [
-            ProductSerializer(product).to_json()
+            ProductSerializer(product).to_dict()
             for product in products_for_serialization
         ]
 
-        products_data = {"products": serialized_products}
+        products_data = {
+            "products": serialized_products,
+            "next": next_page,
+            "previous": previous_page,
+            "current": page,
+            "total": num_of_pages,
+        }
 
         return JsonResponse(products_data)
 
