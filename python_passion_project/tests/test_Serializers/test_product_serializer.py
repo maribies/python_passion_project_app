@@ -1,7 +1,6 @@
 from django.test import TestCase
 from model_bakery import baker
 from api.serializers import ProductSerializer
-import json
 
 
 class TestProductSerializer(TestCase):
@@ -29,86 +28,80 @@ class TestProductSerializer(TestCase):
         self.assertEqual(len(result_empty), 0)
         self.assertNotEqual(len(result), 0)
 
-    def test_to_json(self):
-        result = ProductSerializer(self.product).to_json()
+    def test_to_dict(self):
+        result = ProductSerializer(self.product).to_dict()
 
         self.assertEqual(
             result,
-            json.dumps(
-                {
-                    "name": "Test Product",
-                    "designer": "Test Designer",
-                    "site_url": "https://www.testsite.com",
-                    "condition": "New",
-                    "season": "SS20",
-                    "collection": "Test Collection",
-                    "category": "Handbags",
-                    "brand": "Test Brand",
-                    "material": "test materials made of lots of things",
-                    "size": "OS",
-                    "dimensions": "10in long and 18in wide and 3in depth",
-                    "sku": "TESTSKU89012",
-                    "product_price": "$1234.56",
-                    "stock": [{"color": "purple", "quantity": 1}],
-                    "images": ["https://www.imageurl.jpeg"],
-                }
-            ),
+            {
+                "name": "Test Product",
+                "designer": "Test Designer",
+                "site_url": "https://www.testsite.com",
+                "condition": "New",
+                "season": "SS20",
+                "collection": "Test Collection",
+                "category": "Handbags",
+                "brand": "Test Brand",
+                "material": "test materials made of lots of things",
+                "size": "OS",
+                "dimensions": "10in long and 18in wide and 3in depth",
+                "sku": "TESTSKU89012",
+                "product_price": "$1234.56",
+                "stock": [{"color": "purple", "quantity": 1}],
+                "images": ["https://www.imageurl.jpeg"],
+            },
         )
 
-    def test_to_json_empties(self):
-        result = ProductSerializer(self.product_empty_related).to_json()
+    def test_to_dict_empties(self):
+        result = ProductSerializer(self.product_empty_related).to_dict()
 
         self.assertEqual(
             result,
-            json.dumps(
-                {
-                    "name": "Test Product",
-                    "designer": "Test Designer",
-                    "site_url": "https://www.testsite.com",
-                    "condition": "New",
-                    "season": "SS20",
-                    "collection": "Test Collection",
-                    "category": "Handbags",
-                    "brand": "Test Brand",
-                    "material": "test materials made of lots of things",
-                    "size": "OS",
-                    "dimensions": "10in long and 18in wide and 3in depth",
-                    "sku": "TESTSKU89012",
-                    "product_price": "$1234.56",
-                    "stock": [],
-                    "images": [],
-                }
-            ),
+            {
+                "name": "Test Product",
+                "designer": "Test Designer",
+                "site_url": "https://www.testsite.com",
+                "condition": "New",
+                "season": "SS20",
+                "collection": "Test Collection",
+                "category": "Handbags",
+                "brand": "Test Brand",
+                "material": "test materials made of lots of things",
+                "size": "OS",
+                "dimensions": "10in long and 18in wide and 3in depth",
+                "sku": "TESTSKU89012",
+                "product_price": "$1234.56",
+                "stock": [],
+                "images": [],
+            },
         )
 
-    def test_to_json_multiples(self):
-        result = ProductSerializer(self.product_related_multiple).to_json()
+    def test_to_dict_multiples(self):
+        result = ProductSerializer(self.product_related_multiple).to_dict()
 
         self.assertEqual(
             result,
-            json.dumps(
-                {
-                    "name": "Test Product",
-                    "designer": "Test Designer",
-                    "site_url": "https://www.testsite.com",
-                    "condition": "New",
-                    "season": "SS20",
-                    "collection": "Test Collection",
-                    "category": "Handbags",
-                    "brand": "Test Brand",
-                    "material": "test materials made of lots of things",
-                    "size": "OS",
-                    "dimensions": "10in long and 18in wide and 3in depth",
-                    "sku": "TESTSKU89012",
-                    "product_price": "$1234.56",
-                    "stock": [
-                        {"color": "purple", "quantity": 1},
-                        {"color": "blue", "quantity": 4},
-                    ],
-                    "images": [
-                        "https://www.imageurl.jpeg",
-                        "https://www.imageurl2.jpeg",
-                    ],
-                }
-            ),
+            {
+                "name": "Test Product",
+                "designer": "Test Designer",
+                "site_url": "https://www.testsite.com",
+                "condition": "New",
+                "season": "SS20",
+                "collection": "Test Collection",
+                "category": "Handbags",
+                "brand": "Test Brand",
+                "material": "test materials made of lots of things",
+                "size": "OS",
+                "dimensions": "10in long and 18in wide and 3in depth",
+                "sku": "TESTSKU89012",
+                "product_price": "$1234.56",
+                "stock": [
+                    {"color": "purple", "quantity": 1},
+                    {"color": "blue", "quantity": 4},
+                ],
+                "images": [
+                    "https://www.imageurl.jpeg",
+                    "https://www.imageurl2.jpeg",
+                ],
+            },
         )

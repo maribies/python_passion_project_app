@@ -4,7 +4,6 @@ from . import (
     ImageSerializer,
     StockSerializer,
 )
-import json
 
 
 class ProductSerializer:
@@ -17,27 +16,25 @@ class ProductSerializer:
     def product_images(self):
         return self.product.productimage_set.all()
 
-    def to_json(self):
-        return json.dumps(
-            {
-                "name": self.product.name,
-                "designer": self.product.designer,
-                "site_url": self.product.site_url,
-                "condition": self.product.condition,
-                "season": self.product.season,
-                "collection": self.product.collection,
-                "category": self.product.category,
-                "brand": self.product.brand,
-                "material": self.product.material,
-                "size": self.product.size,
-                "dimensions": self.product.dimensions,
-                "sku": self.product.sku,
-                "product_price": PriceSerializer(self.product.product_price).to_json(),
-                "stock": [
-                    StockSerializer(stock).to_json() for stock in self.product_stock()
-                ],
-                "images": [
-                    ImageSerializer(image).to_json() for image in self.product_images()
-                ],
-            }
-        )
+    def to_dict(self):
+        return {
+            "name": self.product.name,
+            "designer": self.product.designer,
+            "site_url": self.product.site_url,
+            "condition": self.product.condition,
+            "season": self.product.season,
+            "collection": self.product.collection,
+            "category": self.product.category,
+            "brand": self.product.brand,
+            "material": self.product.material,
+            "size": self.product.size,
+            "dimensions": self.product.dimensions,
+            "sku": self.product.sku,
+            "product_price": PriceSerializer(self.product.product_price).to_dict(),
+            "stock": [
+                StockSerializer(stock).to_dict() for stock in self.product_stock()
+            ],
+            "images": [
+                ImageSerializer(image).to_dict() for image in self.product_images()
+            ],
+        }

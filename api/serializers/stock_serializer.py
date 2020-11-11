@@ -1,6 +1,5 @@
 from retail_app.models import ProductStock
 from .color_serializer import ColorSerializer
-import json
 
 
 class StockSerializer:
@@ -8,8 +7,8 @@ class StockSerializer:
         self.stock = stock
         self.quantity = stock.quantity
 
-    def to_json(self):
+    def to_dict(self):
         return {
-            "color": ColorSerializer.to_json(self.stock),
+            "color": ColorSerializer.to_dict(self.stock),
             "quantity": self.quantity,
         }
